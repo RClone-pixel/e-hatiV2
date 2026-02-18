@@ -1,0 +1,766 @@
+/* ================================
+   e-HATi Pemeriksaan — Premium CSS
+   Bootstrap 4 Compatible
+   ================================ */
+
+/* --- Animations --- */
+@keyframes ehati-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes ehati-pulseGlow {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(54, 185, 204, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 16px 4px rgba(54, 185, 204, 0.12);
+    }
+}
+
+.ehati-animate {
+    animation: ehati-fadeInUp 0.45s ease both;
+}
+
+/* --- Premium Tab Navigation --- */
+.ehati-tabs {
+    background: #fff;
+    border-radius: 14px;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: inline-flex;
+}
+.ehati-tabs .nav-link {
+    color: #6e707e;
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 9px 22px;
+    border-radius: 10px;
+    border: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.ehati-tabs .nav-link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #36b9cc, #1cc88a);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 10px;
+}
+.ehati-tabs .nav-link:hover {
+    color: #36b9cc;
+    background: rgba(54, 185, 204, 0.06);
+}
+.ehati-tabs .nav-link.active {
+    color: #fff !important;
+    background: transparent;
+}
+.ehati-tabs .nav-link.active::before {
+    opacity: 1;
+}
+.ehati-tabs .nav-link i,
+.ehati-tabs .nav-link span {
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Premium Card --- */
+.ehati-card {
+    border-radius: 16px !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+.ehati-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07) !important;
+}
+
+/* --- Section Badge Header --- */
+.ehati-section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.ehati-badge-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+.ehati-badge-icon.bg-teal {
+    background: linear-gradient(135deg, #36b9cc, #1cc88a);
+}
+.ehati-badge-icon.bg-blue {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+}
+.ehati-badge-icon.bg-red {
+    background: linear-gradient(135deg, #e74a3b, #be2617);
+}
+.ehati-badge-icon.bg-amber {
+    background: linear-gradient(135deg, #f6c23e, #dda20a);
+}
+.ehati-badge-icon.bg-green {
+    background: linear-gradient(135deg, #1cc88a, #13855c);
+}
+.ehati-badge-icon.bg-cyan {
+    background: linear-gradient(135deg, #36b9cc, #258391);
+}
+.ehati-badge-text {
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: #3a3b45;
+    letter-spacing: 0.15px;
+}
+
+/* --- Photo Frame --- */
+.ehati-photo-frame {
+    width: 100%;
+    max-width: 170px;
+    aspect-ratio: 3/4;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 3px solid #e3e6f0;
+    background: #f8f9fc;
+    transition: border-color 0.3s ease;
+}
+.ehati-photo-frame:hover {
+    border-color: #36b9cc;
+}
+.ehati-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Labels --- */
+.ehati-label {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #3a3b45;
+    margin-bottom: 5px;
+    letter-spacing: 0.2px;
+}
+.ehati-label-sm {
+    font-weight: 600;
+    font-size: 0.76rem;
+    color: #6e707e;
+    margin-bottom: 4px;
+}
+
+/* --- Inputs --- */
+.ehati-input,
+.ehati-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #e3e6f0 !important;
+    padding: 4px 13px;
+    font-size: 0.88rem;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+.ehati-input:focus,
+.ehati-select:focus {
+    border-color: #36b9cc !important;
+    box-shadow: 0 0 0 3px rgba(54, 185, 204, 0.1) !important;
+}
+.ehati-input-readonly {
+    border-radius: 10px;
+    background-color: #f0f2f8 !important;
+    border: 1.5px solid #e3e6f0;
+    font-size: 0.84rem;
+    color: #5a5c69;
+    padding: 8px 12px;
+}
+
+/* --- Input Section Box --- */
+.ehati-input-section {
+    background: #f8f9fc;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #eaecf4;
+}
+
+/* --- Input Group (Exam Inputs) --- */
+.ehati-input-group .form-control {
+    border-radius: 10px 0 0 10px !important;
+    border: 1.5px solid #e3e6f0;
+    font-size: 1.02rem;
+    font-weight: 600;
+    padding: 10px 14px;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+.ehati-input-group .form-control:focus {
+    border-color: #36b9cc;
+    box-shadow: 0 0 0 3px rgba(54, 185, 204, 0.1);
+}
+.ehati-input-group .input-group-text {
+    border-radius: 0 10px 10px 0 !important;
+    background: linear-gradient(135deg, #f0f2f8, #e3e6f0);
+    border: 1.5px solid #e3e6f0;
+    border-left: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #858796;
+    min-width: 52px;
+    justify-content: center;
+}
+
+/* --- Analysis Card --- */
+.ehati-analysis-card {
+    background-color: #f8f9fa;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.ehati-analysis-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle,
+        rgba(54, 185, 204, 0.04) 0%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+.ehati-analysis-inner {
+    padding: 24px 18px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Analysis Typography */
+.ehati-analysis-title {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #3a3b45;
+    letter-spacing: 0.7px;
+    margin-bottom: 6px;
+}
+.ehati-analysis-title span {
+    color: #4e73df;
+    font-style: italic;
+}
+.ehati-analysis-icon {
+    font-size: 2rem;
+    color: #d1d3e2;
+    margin-bottom: 4px;
+    transition: all 0.4s ease;
+}
+.ehati-analysis-icon-dual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 2rem;
+    margin-bottom: 4px;
+}
+.ehati-analysis-icon-dual span {
+    transition: color 0.4s ease;
+}
+.ehati-analysis-icon-dual #ua-icon,
+.ehati-analysis-icon-dual #ua-gender-icon {
+    color: #d1d3e2;
+}
+.ehati-analysis-icon-dual .ehati-icon-sep {
+    color: #d1d3e2;
+    font-size: 1.5rem;
+}
+.ehati-analysis-status {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: all 0.4s ease;
+    color: #d1d3e2;
+    background-color: transparent;
+    padding: 5px 24px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 3px;
+}
+.ehati-analysis-sub {
+    font-size: 0.76rem;
+    color: #858796;
+}
+
+/* Stats Row */
+.ehati-stats-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    gap: 0;
+}
+.ehati-stat-item {
+    text-align: center;
+    padding: 0 16px;
+}
+.ehati-stat-val {
+    display: block;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #3a3b45;
+}
+.ehati-stat-lbl {
+    font-size: 0.7rem;
+    color: #858796;
+}
+.ehati-stat-div {
+    width: 2px;
+    height: 28px;
+    background: rgba(0, 0, 0, 0.07);
+    border-radius: 2px;
+}
+
+/* Advice */
+.ehati-advice {
+    margin-top: 12px;
+}
+.ehati-advice small {
+    font-size: 0.76rem;
+    color: #858796;
+}
+
+/* --- Save Button --- */
+.ehati-btn-save {
+    background: linear-gradient(135deg, #36b9cc, #1cc88a);
+    color: #fff;
+    border: none;
+    padding: 10px 26px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.2px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(54, 185, 204, 0.28);
+}
+.ehati-btn-save:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(54, 185, 204, 0.38);
+}
+
+/* --- Search Button --- */
+.ehati-btn-search {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    color: #fff;
+    border: none;
+    padding: 9px 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(78, 115, 223, 0.28);
+}
+.ehati-btn-search:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(78, 115, 223, 0.38);
+}
+
+/* --- Print Button --- */
+.ehati-btn-print {
+    background: linear-gradient(135deg, #36b9cc, #1cc88a);
+    color: #fff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.ehati-btn-print:hover {
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(54, 185, 204, 0.28);
+}
+
+/* ================================
+   RIWAYAT TAB STYLES
+   ================================ */
+
+/* Stat Cards */
+.ehati-stat-card {
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+.ehati-stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    border-radius: 14px 0 0 14px;
+}
+.ehati-stat-total::before {
+    background: linear-gradient(180deg, #4e73df, #224abe);
+}
+.ehati-stat-month::before {
+    background: linear-gradient(180deg, #1cc88a, #13855c);
+}
+.ehati-stat-today::before {
+    background: linear-gradient(180deg, #36b9cc, #258391);
+}
+.ehati-stat-emp::before {
+    background: linear-gradient(180deg, #f6c23e, #dda20a);
+}
+.ehati-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.09);
+}
+.ehati-stat-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 18px 18px 22px;
+}
+.ehati-stat-card-label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #858796;
+    margin-bottom: 3px;
+}
+.ehati-stat-card-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #3a3b45;
+    line-height: 1;
+}
+.ehati-stat-card-icon {
+    font-size: 1.7rem;
+    color: #d1d3e2;
+}
+
+/* Premium Table */
+.ehati-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.ehati-table thead th {
+    background: linear-gradient(135deg, #f8f9fc, #eef0f8);
+    color: #4e73df;
+    font-weight: 700;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    padding: 12px 10px;
+    border: none;
+    border-bottom: 2px solid #e3e6f0;
+}
+.ehati-table tbody td {
+    padding: 11px 10px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f8;
+    font-size: 0.86rem;
+    color: #5a5c69;
+    transition: background 0.2s ease;
+}
+.ehati-table tbody tr:hover td {
+    background: rgba(54, 185, 204, 0.03);
+}
+
+/* Status Badge */
+.ehati-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 18px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+.ehati-badge-normal {
+    background: rgba(28, 200, 138, 0.12);
+    color: #1cc88a;
+}
+.ehati-badge-warning {
+    background: rgba(246, 194, 62, 0.14);
+    color: #dda20a;
+}
+.ehati-badge-danger {
+    background: rgba(231, 74, 59, 0.12);
+    color: #e74a3b;
+}
+.ehati-badge-info {
+    background: rgba(54, 185, 204, 0.12);
+    color: #258391;
+}
+
+/* Empty State */
+.ehati-empty-icon {
+    font-size: 3.2rem;
+    color: #d1d3e2;
+    animation: ehati-pulseGlow 3s infinite;
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fc;
+}
+
+/* Detail Modal */
+.ehati-modal-content {
+    border-radius: 18px !important;
+    overflow: hidden;
+    border: none;
+}
+.ehati-modal-header {
+    background: linear-gradient(135deg, #36b9cc, #1cc88a);
+    border: none;
+    padding: 16px 22px;
+    display: flex;
+        align-items: center;
+        justify-content: space-between;
+}
+.ehati-modal-header .modal-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+}
+.ehati-modal-header .close {
+        color: #fff;
+            opacity: 0.9;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            font-size: 1.4rem;
+            text-shadow: none;
+            transition: opacity 0.2s;
+}
+.ehati-modal-header .close:hover {
+    opacity: 1;
+    color: #fff;
+}
+.ehati-modal-footer {
+    border-top: 1px solid #f1f3f8;
+    padding: 12px 22px;
+}
+
+/* Action Buttons */
+.ehati-btn-action {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.25s ease;
+    font-size: 0.8rem;
+}
+.ehati-btn-view {
+    background: rgba(54, 185, 204, 0.1);
+    color: #36b9cc;
+}
+.ehati-btn-view:hover {
+    background: #36b9cc;
+    color: #fff;
+    transform: scale(1.1);
+}
+.ehati-btn-delete {
+    background: rgba(231, 74, 59, 0.1);
+    color: #e74a3b;
+}
+.ehati-btn-delete:hover {
+    background: #e74a3b;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* ================================
+   MODAL DETAIL STYLES
+   ================================ */
+
+/* Detail Section */
+.ehati-detail-section {
+    margin-bottom: 5px;
+}
+
+/* Detail Label */
+.ehati-detail-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #858796;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+/* Detail Value */
+.ehati-detail-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #3a3b45;
+    margin-bottom: 0;
+}
+
+/* Section Title in Modal */
+.ehati-section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #3a3b45;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ehati-section-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.ehati-section-icon.bg-blue {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+}
+
+.ehati-section-icon.bg-red {
+    background: linear-gradient(135deg, #e74a3b, #be2617);
+}
+
+.ehati-section-icon.bg-amber {
+    background: linear-gradient(135deg, #f6c23e, #dda20a);
+}
+
+.ehati-section-icon.bg-teal {
+    background: linear-gradient(135deg, #36b9cc, #1cc88a);
+}
+
+/* Divider in Modal */
+.ehati-divider {
+    border: none;
+    border-top: 1px dashed #e3e6f0;
+    margin: 15px 0;
+}
+
+/* Status Badge in Modal */
+.ehati-status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.ehati-status-badge.puasa {
+    background: rgba(28, 200, 138, 0.12);
+    color: #1cc88a;
+}
+
+.ehati-status-badge.tidak-puasa {
+    background: rgba(246, 194, 62, 0.14);
+    color: #dda20a;
+}
+
+/* Notes Box in Modal */
+.ehati-notes-box {
+    background: linear-gradient(135deg, #f8f9fc, #eef0f8);
+    border-left: 3px solid #36b9cc;
+    padding: 15px 18px;
+    border-radius: 0 12px 12px 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #5a5c69;
+    white-space: pre-wrap;
+}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media (max-width: 767px) {
+    .ehati-tabs {
+        padding: 4px;
+    }
+    .ehati-tabs .nav-link {
+        padding: 7px 14px;
+        font-size: 0.82rem;
+    }
+    .ehati-analysis-inner {
+        padding: 18px 12px;
+    }
+    .ehati-analysis-status {
+        font-size: 1.5rem;
+    }
+    .ehati-stat-item {
+        padding: 0 10px;
+    }
+    .ehati-stat-val {
+        font-size: 0.95rem;
+    }
+    .ehati-input-section {
+        padding: 14px;
+    }
+    .ehati-stat-body {
+        padding: 14px 14px 14px 18px;
+    }
+    .ehati-stat-card-value {
+        font-size: 1.2rem;
+    }
+    .ehati-badge-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+    .ehati-badge-text {
+        font-size: 0.84rem;
+    }
+}
+@media (max-width: 575px) {
+    .ehati-stats-row {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .ehati-stat-div {
+        display: none;
+    }
+    .ehati-stat-item {
+        padding: 0 8px;
+        min-width: 65px;
+    }
+}

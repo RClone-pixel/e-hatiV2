@@ -1,0 +1,15 @@
+/* Default */
+.title-short {
+    display: none;
+}
+
+/* Di bawah 720px */
+@media (max-width: 719px) {
+    .title-full {
+        display: none;
+    }
+
+    .title-short {
+        display: block;
+    }
+}

@@ -1,0 +1,290 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Pegawai;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
+/** ============================================================
+ * IMPORT UNTUK EXPORT EXCEL
+ * ============================================================
+ * Pastikan sudah install package Laravel Excel:
+ * composer require maatwebsite/excel
+ *
+ * Dokumentasi: https://docs.laravel-excel.com/3.1/
+ ============================================================ */
+
+use App\Exports\PegawaiExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+/** ============================================================
+ * IMPORT UNTUK EXPORT PDF
+ * ============================================================
+ * Pastikan sudah install package Laravel DomPDF:
+ * composer require barryvdh/laravel-dompdf
+ *
+ * Dokumentasi: https://github.com/barryvdh/laravel-dompdf
+ ============================================================ */
+
+use PDF;
+
+class PegawaiController extends Controller
+{
+    /**
+     * ============================================================
+     * INDEX - Menampilkan daftar semua pegawai
+     * ============================================================
+     */
+    public function index()
+    {
+        $data = array(
+            'title'             => 'Data Pegawai',
+            'menuPegawai'       => 'active',
+            'pegawai'           => Pegawai::orderBy('Nama', 'asc')->get(),
+        );
+        return view('admin.pegawai.index', $data);
+    }
+
+    /**
+     * ============================================================
+     * CREATE - Menampilkan form tambah pegawai baru
+     * ============================================================
+     */
+    public function create()
+    {
+        $data = array(
+            'title'             => 'Tambah Data Pegawai',
+            'menuPegawai'       => 'active',
+        );
+        return view('admin.pegawai.create', $data);
+    }
+
+    /**
+     * ============================================================
+     * STORE - Menyimpan data pegawai baru ke database
+     * ============================================================
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama'              => 'required',
+            'jenis_kelamin'     => 'required',
+            'tanggal_lahir'     => 'required',
+            'golongan_darah'    => 'required',
+            'riwayat_penyakit'  => 'required',
+            'foto'              => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'nama.required'             => 'Nama tidak boleh kosong',
+            'jenis_kelamin.required'    => 'Jenis Kelamin tidak boleh kosong',
+            'tanggal_lahir.required'    => 'Tanggal Lahir tidak boleh kosong',
+            'golongan_darah.required'   => 'Golongan Darah harus dipilih',
+            'foto.required'             => 'Foto tidak boleh kosong',
+            'foto.image'                => 'File harus berupa gambar',
+            'foto.mimes'                => 'Format foto harus jpeg, jpg, png',
+            'foto.max'                  => 'Ukuran foto maksimal 2MB',
+        ]);
+
+        $pegawai = new Pegawai;
+        $pegawai->nama              = $request->nama;
+        $pegawai->jenis_kelamin     = $request->jenis_kelamin;
+        $pegawai->tanggal_lahir     = $request->tanggal_lahir;
+        $pegawai->umur              = \Carbon\Carbon::parse($request->tanggal_lahir)->age;
+        $pegawai->gol_darah         = $request->golongan_darah;
+        $pegawai->riwayat_penyakit  = $request->riwayat_penyakit;
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+
+            if ($file->isValid()) {
+                $path = $file->store('foto-pegawai');
+                $pegawai->foto = $path;
+            } else {
+                return back()->withErrors(['foto' => 'Gagal mengunggah foto'])->withInput();
+            }
+        }
+        $pegawai->save();
+
+        return redirect()->route('pegawai')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    /**
+     * ============================================================
+     * EDIT - Menampilkan form edit pegawai
+     * ============================================================
+     */
+    public function edit($id)
+    {
+        $data = array(
+            'title'             => 'Edit Data Pegawai',
+            'menuPegawai'       => 'active',
+            'pegawai'           => Pegawai::FindOrFail($id),
+        );
+        return view('admin.pegawai.edit', $data);
+    }
+
+    /**
+     * ============================================================
+     * UPDATE - Menyimpan perubahan data pegawai
+     * ============================================================
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama'              => 'required',
+            'jenis_kelamin'     => 'required',
+            'tanggal_lahir'     => 'required',
+            'golongan_darah'    => 'required',
+            'riwayat_penyakit'  => 'required',
+            'foto'              => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ], [
+            'nama.required'             => 'Nama tidak boleh kosong',
+            'jenis_kelamin.required'    => 'Jenis Kelamin tidak boleh kosong',
+            'tanggal_lahir.required'    => 'Tanggal Lahir tidak boleh kosong',
+            'golongan_darah.required'   => 'Golongan Darah harus dipilih',
+            'foto.required'             => 'Foto tidak boleh kosong',
+            'foto.image'                => 'File harus berupa gambar',
+            'foto.mimes'                => 'Format foto harus jpeg, jpg, png',
+            'foto.max'                  => 'Ukuran foto maksimal 2MB',
+            'foto.uploaded'             => 'File gagal diupload. Pastikan file berupa gambar dan ukuran di bawah 2MB.',
+        ]);
+
+        $pegawai = Pegawai::FindOrFail($id);
+        $pegawai->nama              = $request->nama;
+        $pegawai->jenis_kelamin     = $request->jenis_kelamin;
+        $pegawai->tanggal_lahir     = $request->tanggal_lahir;
+        $pegawai->umur              = \Carbon\Carbon::parse($request->tanggal_lahir)->age;
+        $pegawai->gol_darah         = $request->golongan_darah;
+        $pegawai->riwayat_penyakit  = $request->riwayat_penyakit;
+
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+
+            if ($file->isValid()) {
+                $path = $file->store('foto-pegawai');
+                $pegawai->foto = $path;
+            } else {
+                return back()->withErrors(['foto' => 'Gagal mengunggah foto'])->withInput();
+            }
+        }
+        $pegawai->save();
+
+        return redirect()->route('pegawai')->with('success', 'Data berhasil diedit');
+    }
+
+    /**
+     * ============================================================
+     * DELETE - Menghapus data pegawai
+     * ============================================================
+     */
+    public function delete($id)
+    {
+        $pegawai = Pegawai::FindOrFail($id);
+
+        if ($pegawai->foto && Storage::disk('public')->exists($pegawai->foto)) {
+            Storage::disk('public')->delete($pegawai->foto);
+        }
+
+        $pegawai->delete();
+
+        return redirect()->route('pegawai')->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
+     * ============================================================
+     * EXPORT EXCEL - Export data pegawai ke format Excel
+     * ============================================================
+     *
+     * URL: /pegawai/export-excel
+     * Method: GET
+     *
+     * Menggunakan Laravel Excel untuk generate file .xlsx
+     * File akan otomatis didownload oleh browser
+     *
+     * CARA KERJA:
+     * 1. Memanggil class PegawaiExport (App\Exports\PegawaiExport)
+     * 2. Laravel Excel akan generate file Excel
+     * 3. File didownload dengan nama yang sudah diformat
+     */
+    public function exportExcel()
+    {
+        // Format nama file: Data_Pegawai_YYYYMMDD_His.xlsx
+        $fileName = 'Data_Pegawai_' . now()->format('Ymd_His') . '.xlsx';
+
+        // Download file Excel
+        return Excel::download(new PegawaiExport, $fileName);
+    }
+
+    /**
+     * ============================================================
+     * EXPORT PDF - Export data pegawai ke format PDF
+     * ============================================================
+     *
+     * URL: /pegawai/export-pdf
+     * Method: GET
+     *
+     * Menggunakan Laravel DomPDF untuk generate file PDF
+     * File akan otomatis didownload atau ditampilkan di browser
+     *
+     * CARA KERJA:
+     * 1. Mengambil semua data pegawai dari database
+     * 2. Load view khusus untuk PDF (admin.pegawai.pdf)
+     * 3. DomPDF akan merender HTML menjadi PDF
+     * 4. File didownload dengan nama yang sudah diformat
+     */
+    public function exportPdf()
+    {
+        // Ambil semua data pegawai, urutkan berdasarkan nama
+        $pegawai = Pegawai::orderBy('nama', 'asc')->get();
+
+        // Load view PDF dengan data pegawai
+        $pdf = PDF::loadView('admin.pegawai.pdf', compact('pegawai'));
+
+        // Set ukuran kertas (A4 portrait)
+        $pdf->setPaper('A4', 'portrait');
+
+        // Format nama file: Data_Pegawai_YYYYMMDD_His.pdf
+        $fileName = 'Data_Pegawai_' . now()->format('Ymd_His') . '.pdf';
+
+        // Download file PDF
+        return $pdf->download($fileName);
+    }
+
+    /**
+     * ============================================================
+     * AJAX INDEX - API untuk mendapatkan daftar pegawai (JSON)
+     * ============================================================
+     * Digunakan untuk dropdown select di form pemeriksaan
+     */
+    public function ajaxIndex()
+    {
+        $pegawai = Pegawai::select('id', 'nama')
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        return response()->json($pegawai);
+    }
+
+    /**
+     * ============================================================
+     * AJAX SHOW - API untuk mendapatkan detail pegawai (JSON)
+     * ============================================================
+     * Digunakan untuk menampilkan detail pegawai saat dipilih
+     */
+    public function ajaxShow($id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        $data = $pegawai->toArray();
+
+        $data['tanggal_lahir'] = $pegawai->tanggal_lahir->format('Y-m-d');
+
+        if ($pegawai->foto) {
+            $data['foto_url'] = asset('storage/' . $pegawai->foto);
+        } else {
+            $data['foto_url'] = asset('sbadmin2/img/img1.png');
+        }
+
+        return response()->json($data);
+    }
+}

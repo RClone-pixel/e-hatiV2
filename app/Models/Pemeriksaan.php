@@ -17,7 +17,7 @@ class Pemeriksaan extends Model
         'sistolik',
         'diastolik',
         'nadi',
-        'nilai_glukometer',
+        'konsentrasi_glukosa',
         'parameter_gula',
         'kolesterol_total',
         'asam_urat',
@@ -34,7 +34,7 @@ class Pemeriksaan extends Model
             'sistolik' => 'integer',
             'diastolik' => 'integer',
             'nadi' => 'integer',
-            'nilai_glukometer' => 'decimal:1',
+            'konsentrasi_glukosa' => 'decimal:1',
             'kolesterol_total' => 'decimal:1',
             'asam_urat' => 'decimal:1',
         ];

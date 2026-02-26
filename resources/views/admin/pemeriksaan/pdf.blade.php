@@ -323,8 +323,8 @@
 
                     {{-- Gula darah --}}
                     <td class="col-lab">
-                        @if ($item->nilai_glukometer)
-                            {{ $item->nilai_glukometer }}
+                        @if ($item->konsentrasi_glukosa)
+                            {{ $item->konsentrasi_glukosa }}
                             <br><small>{{ $item->parameter_gula }}</small>
                         @else
                             -

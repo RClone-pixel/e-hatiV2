@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('nadi')->nullable();
 
             // Blood Sugar
-            $table->decimal('nilai_glukometer', 6, 1)->nullable();
+            $table->decimal('konsentrasi_glukosa', 6, 1)->nullable();
             $table->string('parameter_gula', 10)->nullable(); // GDS, GDP, GD2PP
 
             // Cholesterol

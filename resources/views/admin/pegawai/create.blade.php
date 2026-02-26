@@ -1,23 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="h3 mb-4 text-gray-800">
-        <i class="fas fa-plus mr-2"></i>
-        {{ $title }}
-    </h1>
+    {{-- Page Title --}}
+    <div class="pegawai-section-badge mb-4 pegawai-animate">
+        <div class="pegawai-badge-icon bg-warning-gradient">
+            <i class="fas fa-user-edit"></i>
+        </div>
+        <span class="pegawai-badge-text">{{ $title }}</span>
+    </div>
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header">
-            <a href="{{ route('pegawai') }}" class="btn btn-sm btn-success">
-                <i class="fas fa-arrow-left mr-2"></i>
-                Kembali
+    <div class="pegawai-card card shadow-sm pegawai-animate" style="animation-delay: 0.05s">
+        <div class="card-body p-4">
+            <a href="{{ route('pegawai') }}" class="pegawai-btn-back">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali
             </a>
         </div>
 
         <div class="card-body">
             <form action="{{ route('pegawaiStore') }}" method="post" enctype="multipart/form-data">
                 @csrf
+
                 <div class="row">
                     <div class="col-xl-6 mt-2">
                         <label class="form-label font-weight-bold">

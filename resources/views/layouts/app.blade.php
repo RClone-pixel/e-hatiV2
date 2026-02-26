@@ -26,6 +26,8 @@
 
     {{-- Pemeriksaan Premium CSS --}}
     <link href="{{ asset('css/pemeriksaan.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/pegawai.css') }}" rel="stylesheet">
 
     <!-- Custom styles for Tables -->
     <link href="{{ asset('sbadmin2/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
@@ -208,6 +210,11 @@
 
     {{-- Riwayat Pemeriksaan --}}
     <script src="{{ asset('js/riwayat.js') }}"></script>
+
+    {{-- Pegawai --}}
+    <script src="{{ asset('js/pegawai.js') }}"></script>
+
+
 
     @session('success')
         <script>

@@ -129,7 +129,7 @@ class PemeriksaanExport implements FromCollection, WithHeadings, WithMapping, Wi
             $pemeriksaan->nadi ?: '-',                              // Nadi
 
             // Laboratorium
-            $pemeriksaan->nilai_glukometer ?: '-',                  // Gula Darah
+            $pemeriksaan->konsentrasi_glukosa ?: '-',                  // Gula Darah
             $pemeriksaan->parameter_gula ?: '-',                    // Parameter Gula
             $pemeriksaan->kolesterol_total ?: '-',                  // Kolesterol
             $pemeriksaan->asam_urat ?: '-',                         // Asam Urat

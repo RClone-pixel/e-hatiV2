@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // FUngsi Reset Form Pemeriksaan
     function resetPemeriksaanForm() {
-        const fields = ['tinggi_badan', 'berat_badan', 'sistolik', 'diastolik', 'nadi', 'nilai_glukometer', 'kolesterol_total', 'asam_urat', 'catatan_dokter'];
+        const fields = ['tinggi_badan', 'berat_badan', 'sistolik', 'diastolik', 'nadi', 'konsentrasi_glukosa', 'kolesterol_total', 'asam_urat', 'catatan_dokter'];
         fields.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.value = '';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Trigger BS Reset (bloodsugar.js akan mendeteksi input kosong dan mereset UI)
-        const inputGlukometer = document.getElementById('nilai_glukometer');
+        const inputGlukometer = document.getElementById('konsentrasi_glukosa');
         if (inputGlukometer) {
             inputGlukometer.dispatchEvent(new Event('input'));
         }

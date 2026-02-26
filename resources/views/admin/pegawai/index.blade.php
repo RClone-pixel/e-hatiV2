@@ -9,9 +9,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header d-flex flex-wrap justify-content-xl-between justify-content-center">
-            {{-- ============================================================
-                TOMBOL TAMBAH DATA
-                ============================================================ --}}
+
             <div class="mb-1 mr-1">
                 <a href="{{ route('pegawaiCreate') }}" class="btn btn-sm btn-primary">
                     <i class="fas fa-plus mr-2"></i>
@@ -19,19 +17,6 @@
                 </a>
             </div>
 
-            {{-- ============================================================
-                TOMBOL EXPORT EXCEL & PDF
-                ============================================================
-
-                CARA KERJA:
-                - Tombol Excel akan mengarah ke route pegawaiExportExcel
-                - Tombol PDF akan mengarah ke route pegawaiExportPdf
-                - File akan otomatis didownload oleh browser
-
-                PASTIKAN SUDAH INSTALL:
-                - composer require maatwebsite/excel
-                - composer require barryvdh/laravel-dompdf
-            ============================================================ --}}
             <div>
                 {{-- Tombol Export Excel --}}
                 <a href="{{ route('pegawaiExportExcel') }}" class="btn btn-sm btn-success">

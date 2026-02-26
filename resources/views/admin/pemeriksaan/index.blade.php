@@ -128,9 +128,15 @@
                     {{-- === SECTION: BMI === --}}
                     <div class="ehati-card card shadow-sm border-0 mb-4 ehati-animate" style="animation-delay:.1s">
                         <div class="card-body p-4">
-                            <div class="ehati-section-badge mb-3">
-                                <div class="ehati-badge-icon bg-blue"><i class="fas fa-weight"></i></div>
-                                <span class="ehati-badge-text">Body Mass Index & Broca</span>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="ehati-section-badge mb-0">
+                                    <div class="ehati-badge-icon bg-blue"><i class="fas fa-weight"></i></div>
+                                    <span class="ehati-badge-text">Body Mass Index & Broca</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal"
+                                    data-target="#bmiTableModal">
+                                    <i class="fas fa-table mr-1"></i>Tabel BMI
+                                </button>
                             </div>
                             <div class="row align-items-stretch">
                                 <div class="col-lg-5 col-md-12 mb-3 mb-lg-0">
@@ -197,9 +203,15 @@
                     {{-- === SECTION: Blood Pressure === --}}
                     <div class="ehati-card card shadow-sm border-0 mb-4 ehati-animate" style="animation-delay:.15s">
                         <div class="card-body p-4">
-                            <div class="ehati-section-badge mb-3">
-                                <div class="ehati-badge-icon bg-red"><i class="fas fa-heartbeat"></i></div>
-                                <span class="ehati-badge-text">Tekanan Darah & Denyut Nadi</span>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="ehati-section-badge mb-0">
+                                    <div class="ehati-badge-icon bg-red"><i class="fas fa-heartbeat"></i></div>
+                                    <span class="ehati-badge-text">Tekanan Darah & Denyut Nadi</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal"
+                                    data-target="#TekananDarahTableModal">
+                                    <i class="fas fa-table mr-1"></i>Tabel Tekanan Darah
+                                </button>
                             </div>
                             <div class="row align-items-stretch">
                                 <div class="col-lg-5 col-md-12 mb-3 mb-lg-0">
@@ -275,18 +287,24 @@
                     {{-- === SECTION: Blood Sugar === --}}
                     <div class="ehati-card card shadow-sm border-0 mb-4 ehati-animate" style="animation-delay:.2s">
                         <div class="card-body p-4">
-                            <div class="ehati-section-badge mb-3">
-                                <div class="ehati-badge-icon bg-amber"><i class="fas fa-tint"></i></div>
-                                <span class="ehati-badge-text">Gula Darah</span>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="ehati-section-badge mb-0">
+                                    <div class="ehati-badge-icon bg-amber"><i class="fas fa-tint"></i></div>
+                                    <span class="ehati-badge-text">Gula Darah</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-warning" data-toggle="modal"
+                                    data-target="#GulaDarahTableModal">
+                                    <i class="fas fa-table mr-1"></i>Tabel Gula Darah
+                                </button>
                             </div>
                             <div class="row align-items-stretch">
                                 <div class="col-lg-5 col-md-12 mb-3 mb-lg-0">
                                     <div class="ehati-input-section h-100 d-flex flex-column justify-content-center">
                                         <div class="form-group mb-3">
-                                            <label class="ehati-label">Nilai Glukometer</label>
+                                            <label class="ehati-label">Konsentrasi Glukosa</label>
                                             <div class="input-group ehati-input-group">
-                                                <input type="number" class="form-control" name="nilai_glukometer"
-                                                    id="nilai_glukometer" placeholder="0">
+                                                <input type="number" class="form-control" name="konsentrasi_glukosa"
+                                                    id="konsentrasi_glukosa" placeholder="0">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">mg/dL</span>
                                                 </div>
@@ -323,7 +341,7 @@
                                                 <div class="ehati-stat-div"></div>
                                                 <div class="ehati-stat-item">
                                                     <span id="bs-range" class="ehati-stat-val">—</span>
-                                                    <small class="ehati-stat-lbl">Rentang</small>
+                                                    <small class="ehati-stat-lbl">Rentang Normal</small>
                                                 </div>
                                             </div>
                                             <div class="ehati-advice">
@@ -339,9 +357,15 @@
                     {{-- === SECTION: Cholesterol === --}}
                     <div class="ehati-card card shadow-sm border-0 mb-4 ehati-animate" style="animation-delay:.25s">
                         <div class="card-body p-4">
-                            <div class="ehati-section-badge mb-3">
-                                <div class="ehati-badge-icon bg-green"><i class="fas fa-flask"></i></div>
-                                <span class="ehati-badge-text">Kolesterol</span>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="ehati-section-badge mb-0">
+                                    <div class="ehati-badge-icon bg-green"><i class="fas fa-flask"></i></div>
+                                    <span class="ehati-badge-text">Kolesterol</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal"
+                                    data-target="#KolesterolTableModal">
+                                    <i class="fas fa-table mr-1"></i>Tabel Kolesterol
+                                </button>
                             </div>
                             <div class="row align-items-stretch">
                                 <div class="col-lg-5 col-md-12 mb-3 mb-lg-0">
@@ -361,7 +385,8 @@
                                 <div class="col-lg-7 col-md-12">
                                     <div id="chol-card" class="ehati-analysis-card">
                                         <div class="ehati-analysis-inner">
-                                            <h6 class="ehati-analysis-title">Analisis <span>Kadar Kolesterol</span></h6>
+                                            <h6 class="ehati-analysis-title">Analisis <span>Kadar Kolesterol</span>
+                                            </h6>
                                             <div id="chol-icon" class="ehati-analysis-icon">
                                                 <i class="fas fa-flask"></i>
                                             </div>
@@ -375,7 +400,7 @@
                                                 <div class="ehati-stat-div"></div>
                                                 <div class="ehati-stat-item">
                                                     <span id="chol-range" class="ehati-stat-val">—</span>
-                                                    <small class="ehati-stat-lbl">Rentang</small>
+                                                    <small class="ehati-stat-lbl">Rentang Normal</small>
                                                 </div>
                                             </div>
                                             <div class="ehati-advice">
@@ -391,9 +416,15 @@
                     {{-- === SECTION: Uric Acid === --}}
                     <div class="ehati-card card shadow-sm border-0 mb-4 ehati-animate" style="animation-delay:.3s">
                         <div class="card-body p-4">
-                            <div class="ehati-section-badge mb-3">
-                                <div class="ehati-badge-icon bg-cyan"><i class="fas fa-vial"></i></div>
-                                <span class="ehati-badge-text">Asam Urat</span>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="ehati-section-badge mb-0">
+                                    <div class="ehati-badge-icon bg-cyan"><i class="fas fa-vial"></i></div>
+                                    <span class="ehati-badge-text">Asam Urat</span>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal"
+                                    data-target="#AsamTableModal">
+                                    <i class="fas fa-table mr-1"></i>Tabel Asam Urat
+                                </button>
                             </div>
                             <div class="row align-items-stretch">
                                 <div class="col-lg-5 col-md-12 mb-3 mb-lg-0">
@@ -515,3 +546,9 @@
         </script>
     @endif
 @endsection
+
+@include('admin.pemeriksaan.modal.bmi')
+@include('admin.pemeriksaan.modal.tekanan-darah')
+@include('admin.pemeriksaan.modal.kolesterol')
+@include('admin.pemeriksaan.modal.gula-darah')
+@include('admin.pemeriksaan.modal.asam-urat')

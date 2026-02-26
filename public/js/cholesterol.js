@@ -8,6 +8,11 @@ const cholIconEl = document.getElementById('chol-icon');
 const cholReadingEl = document.getElementById('chol-reading');
 const cholRangeEl = document.getElementById('chol-range');
 
+const BATAS = {
+    KOLESTEROL_MIN: 50,
+    KOLESTEROL_MAX: 800
+};
+
 // Event Listener (real-time calculation)
 if (inputKolesterol) {
     inputKolesterol.addEventListener('input', calculateChol);
@@ -16,7 +21,7 @@ if (inputKolesterol) {
 function calculateChol() {
     let nilai = parseFloat(inputKolesterol.value);
 
-    if (nilai > 0) {
+    if (nilai >= BATAS.KOLESTEROL_MIN && nilai <= BATAS.KOLESTEROL_MAX) {
         let category = classifyChol(nilai);
         updateCholUI(category, nilai);
     } else {
@@ -38,12 +43,9 @@ function classifyChol(nilai) {
 // Palet warna premium per level
 function getCholColors(level) {
     switch (level) {
-        case 0: // Normal
-            return { bg: '#f0fdf4', statusColor: '#059669', text: '#065f46', border: '#05966920' };
-        case 1: // Borderline
-            return { bg: '#fffbeb', statusColor: '#d97706', text: '#92400e', border: '#d9770620' };
-        case 2: // Tinggi
-            return { bg: '#fef2f2', statusColor: '#dc2626', text: '#991b1b', border: '#dc262620' };
+        case 0: return { bg: '#f4faf6', statusColor: '#3a9e6f', text: '#1d5c3f', border: '#3a9e6f18' }; // Normal
+        case 1: return { bg: '#fdfaf2', statusColor: '#c49a3a', text: '#7a5c10', border: '#c49a3a18' }; // Borderline
+        case 2: return { bg: '#fdf4f4', statusColor: '#c45252', text: '#7a2424', border: '#c4525218' }; // Tinggi
         default:
             return { bg: '#f8f9fa', statusColor: '#858796', text: '#5a5c69', border: 'transparent' };
     }

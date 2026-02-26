@@ -317,7 +317,7 @@ const RiwayatTemplates = {
                             <i class="fas fa-tint mr-1 text-danger"></i> Gula Darah
                         </label>
                         <p class="ehati-detail-value">
-                            ${this.formatNumber(data.nilai_glukometer, 1)} <small>mg/dL</small>
+                            ${this.formatNumber(data.konsentrasi_glukosa, 1)} <small>mg/dL</small>
                             ${data.parameter_gula ? `<span class="text-muted">(${data.parameter_gula})</span>` : ''}
                         </p>
                     </div>

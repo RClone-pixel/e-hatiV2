@@ -99,7 +99,7 @@ class PemeriksaanController extends Controller
             'sistolik'             => $request->sistolik,
             'diastolik'            => $request->diastolik,
             'nadi'                 => $request->nadi,
-            'nilai_glukometer'     => $request->nilai_glukometer,
+            'konsentrasi_glukosa'     => $request->konsentrasi_glukosa,
             'parameter_gula'       => $request->parameter_gula,
             'kolesterol_total'     => $request->kolesterol_total,
             'asam_urat'            => $request->asam_urat,

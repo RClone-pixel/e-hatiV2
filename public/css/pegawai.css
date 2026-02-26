@@ -1,0 +1,501 @@
+/* ================================
+    e-HATi Pegawai — Premium CSS
+    Bootstrap 4 Compatible
+   ================================ */
+
+/* --- Animations --- */
+@keyframes pegawai-fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pegawai-animate {
+    animation: pegawai-fadeInUp 0.45s ease both;
+}
+
+/* --- Premium Card --- */
+.pegawai-card {
+    border-radius: 16px !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.pegawai-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07) !important;
+}
+
+/* --- Section Badge Header --- */
+.pegawai-section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pegawai-badge-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.pegawai-badge-icon.bg-primary-gradient {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+}
+
+.pegawai-badge-icon.bg-success-gradient {
+    background: linear-gradient(135deg, #1cc88a, #13855c);
+}
+
+.pegawai-badge-icon.bg-info-gradient {
+    background: linear-gradient(135deg, #36b9cc, #258391);
+}
+
+.pegawai-badge-icon.bg-warning-gradient {
+    background: linear-gradient(135deg, #f6c23e, #dda20a);
+}
+
+.pegawai-badge-icon.bg-danger-gradient {
+    background: linear-gradient(135deg, #e74a3b, #be2617);
+}
+
+.pegawai-badge-text {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #3a3b45;
+    letter-spacing: 0.15px;
+}
+
+/* --- Premium Table --- */
+.pegawai-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.pegawai-table thead th {
+    background: linear-gradient(135deg, #f8f9fc, #eef0f8);
+    color: #4e73df;
+    font-weight: 700;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    padding: 14px 12px;
+    border: none;
+    border-bottom: 2px solid #e3e6f0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.pegawai-table thead th:hover {
+    background: linear-gradient(135deg, #eef0f8, #e3e6f0);
+}
+
+.pegawai-table thead th.sortable::after {
+    content: '\f0dc';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: 6px;
+    font-size: 0.7rem;
+    color: #b7b9cc;
+}
+
+.pegawai-table thead th.sort-asc::after {
+    content: '\f0de';
+    color: #4e73df;
+}
+
+.pegawai-table thead th.sort-desc::after {
+    content: '\f0dd';
+    color: #4e73df;
+}
+
+.pegawai-table tbody td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f8;
+    font-size: 0.88rem;
+    color: #5a5c69;
+    transition: background 0.2s ease;
+}
+
+.pegawai-table tbody tr:hover td {
+    background: rgba(78, 115, 223, 0.03);
+}
+
+/* --- Photo Thumbnail --- */
+.pegawai-photo-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #e3e6f0;
+    transition: all 0.3s ease;
+}
+
+.pegawai-photo-thumb:hover {
+    border-color: #4e73df;
+    transform: scale(1.1);
+}
+
+/* --- Action Buttons --- */
+.pegawai-btn-action {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.25s ease;
+    font-size: 0.85rem;
+}
+
+.pegawai-btn-view {
+    background: rgba(54, 185, 204, 0.1);
+    color: #36b9cc;
+}
+
+.pegawai-btn-view:hover {
+    background: #36b9cc;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.pegawai-btn-edit {
+    background: rgba(246, 194, 62, 0.12);
+    color: #dda20a;
+}
+
+.pegawai-btn-edit:hover {
+    background: #f6c23e;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+.pegawai-btn-delete {
+    background: rgba(231, 74, 59, 0.1);
+    color: #e74a3b;
+}
+
+.pegawai-btn-delete:hover {
+    background: #e74a3b;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* --- Buttons --- */
+.pegawai-btn-add {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    color: #fff;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(78, 115, 223, 0.28);
+}
+
+.pegawai-btn-add:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(78, 115, 223, 0.38);
+}
+
+.pegawai-btn-export {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.pegawai-btn-export:hover {
+    transform: translateY(-1px);
+}
+
+/* --- Modal Styles --- */
+.pegawai-modal-content {
+    border-radius: 18px !important;
+    overflow: hidden;
+    border: none;
+}
+
+.pegawai-modal-header {
+    background: linear-gradient(135deg, #e74a3b, #be2617);
+    border: none;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pegawai-modal-header .modal-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.pegawai-modal-header .close {
+    color: #fff;
+    opacity: 0.9;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-size: 1.5rem;
+    text-shadow: none;
+    transition: opacity 0.2s;
+}
+
+.pegawai-modal-header .close:hover {
+    opacity: 1;
+    color: #fff;
+}
+
+.pegawai-modal-body {
+    padding: 24px;
+}
+
+.pegawai-modal-footer {
+    border-top: 1px solid #f1f3f8;
+    padding: 16px 24px;
+}
+
+/* --- Detail Item in Modal --- */
+.pegawai-detail-item {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f3f8;
+}
+
+.pegawai-detail-item:last-child {
+    border-bottom: none;
+}
+
+.pegawai-detail-label {
+    width: 140px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #858796;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.pegawai-detail-value {
+    flex: 1;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #3a3b45;
+}
+
+/* --- Photo Preview in Modal --- */
+.pegawai-photo-preview {
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 3/4;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 3px solid #e3e6f0;
+    background: #f8f9fc;
+    margin: 0 auto;
+}
+
+.pegawai-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- Empty State --- */
+.pegawai-empty-icon {
+    font-size: 3.5rem;
+    color: #d1d3e2;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fc;
+    margin-bottom: 16px;
+}
+
+/* --- Form Styles --- */
+.pegawai-form-label {
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: #3a3b45;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+}
+
+.pegawai-form-input {
+    border-radius: 10px !important;
+    border: 1.5px solid #e3e6f0 !important;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.pegawai-form-input:focus {
+    border-color: #4e73df !important;
+    box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1) !important;
+}
+
+.pegawai-form-select {
+    border-radius: 10px !important;
+    border: 1.5px solid #e3e6f0 !important;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    height: auto !important;
+}
+
+.pegawai-form-select:focus {
+    border-color: #4e73df !important;
+    box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1) !important;
+}
+
+.pegawai-btn-submit {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(78, 115, 223, 0.28);
+}
+
+.pegawai-btn-submit:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(78, 115, 223, 0.38);
+}
+
+.pegawai-btn-back {
+    background: #f8f9fc;
+    color: #5a5c69;
+    border: 1.5px solid #e3e6f0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.pegawai-btn-back:hover {
+    background: #e3e6f0;
+    color: #3a3b45;
+}
+
+/* --- Photo Upload Preview --- */
+.pegawai-photo-upload {
+    width: 100%;
+    max-width: 180px;
+    aspect-ratio: 3/4;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 3px dashed #d1d3e2;
+    background: #f8f9fc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.pegawai-photo-upload:hover {
+    border-color: #4e73df;
+    background: rgba(78, 115, 223, 0.05);
+}
+
+.pegawai-photo-upload.has-image {
+    border-style: solid;
+    border-color: #4e73df;
+}
+
+.pegawai-photo-upload img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pegawai-photo-upload-placeholder {
+    text-align: center;
+    color: #b7b9cc;
+}
+
+.pegawai-photo-upload-placeholder i {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.pegawai-photo-upload-placeholder span {
+    font-size: 0.8rem;
+    display: block;
+}
+
+.pegawai-photo-view-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    color: #4e73df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.pegawai-photo-view-btn:hover {
+    background: #4e73df;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* --- Responsive --- */
+@media (max-width: 767px) {
+    .pegawai-table thead th {
+        padding: 12px 8px;
+        font-size: 0.7rem;
+    }
+
+    .pegawai-table tbody td {
+        padding: 12px 8px;
+        font-size: 0.82rem;
+    }
+
+    .pegawai-photo-thumb {
+        width: 36px;
+        height: 36px;
+    }
+
+    .pegawai-btn-action {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+}

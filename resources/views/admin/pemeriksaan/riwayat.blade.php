@@ -190,8 +190,8 @@
 
                                 {{-- Gula Darah --}}
                                 <td>
-                                    @if ($r->nilai_glukometer)
-                                        <span class="font-weight-bold">{{ $r->nilai_glukometer }}</span>
+                                    @if ($r->konsentrasi_glukosa)
+                                        <span class="font-weight-bold">{{ $r->konsentrasi_glukosa }}</span>
                                         <small class="text-muted">mg/dL</small>
                                     @else
                                         <span class="text-muted">-</span>

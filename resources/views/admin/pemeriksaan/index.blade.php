@@ -483,7 +483,7 @@
                                                 <div class="ehati-stat-div"></div>
                                                 <div class="ehati-stat-item">
                                                     <span id="ua-range" class="ehati-stat-val">—</span>
-                                                    <small class="ehati-stat-lbl">Rentang (mg/dL)</small>
+                                                    <small class="ehati-stat-lbl">Rentang Normal</small>
                                                 </div>
                                             </div>
                                             <div class="ehati-advice">

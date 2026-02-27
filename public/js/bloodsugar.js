@@ -53,7 +53,7 @@ function calculateBS() {
 
     // Di luar batas logis — tampilkan Tidak Valid
     if (nilai < BATAS.GULA_MIN || nilai > BATAS.GULA_MAX) {
-        showInvalidUI(nilai);
+        showInvalidUI();
         return;
     }
 
@@ -205,11 +205,7 @@ function updateBSUI(category, nilai, parameter) {
 }
 
 // -------------------------------------------------------
-function showInvalidUI(nilai) {
-    let pesanMin = `Nilai terlalu rendah (min. ${BATAS.GULA_MIN} mg/dL). Periksa kembali input Anda.`;
-    let pesanMax = `Nilai terlalu tinggi (maks. ${BATAS.GULA_MAX} mg/dL). Periksa kembali input Anda.`;
-    let pesan    = nilai < BATAS.GULA_MIN ? pesanMin : pesanMax;
-
+function showInvalidUI() {
     if (bsStatusEl) {
         bsStatusEl.style.setProperty('color', '#fff', 'important');
         bsStatusEl.style.setProperty('background-color', '#858796', 'important');
@@ -221,18 +217,18 @@ function showInvalidUI(nilai) {
         bsCardEl.style.backgroundColor = '#f8f9fa';
         bsCardEl.style.border = '1px solid #85879618';
     }
-    if (bsReadingEl) bsReadingEl.innerText = nilai;
+    if (bsReadingEl) bsReadingEl.innerText = '--.-';
     if (bsRangeEl)   bsRangeEl.innerText = '-';
     if (bsAdviceEl) {
         bsAdviceEl.style.color = '#5a5c69';
-        bsAdviceEl.innerHTML = `<i class="fas fa-times-circle mr-1"></i>${pesan}`;
+        bsAdviceEl.innerHTML   = `<i class="fas fa-times-circle mr-1"></i>Angka tidak valid.`;
     }
 }
 
 // -------------------------------------------------------
 function resetBSUI() {
     if (bsStatusEl) {
-        bsStatusEl.innerText = '- -';
+        bsStatusEl.innerText = '— —';
         bsStatusEl.style.setProperty('color', '#d1d3e2', 'important');
         bsStatusEl.style.setProperty('background-color', 'transparent', 'important');
     }

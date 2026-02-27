@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Di luar batas logis — tampilkan Tidak Valid
         if (!isValidInput(sbp, dbp)) {
-            showInvalidBPUI(sbp, dbp);
+            showInvalidBPUI();
             return;
         }
 
@@ -204,14 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------------
-    function showInvalidBPUI(sbp, dbp) {
-        let pesan;
-        if (sbp < BATAS.SBP_MIN || dbp < BATAS.DBP_MIN) {
-            pesan = `Nilai terlalu rendah. Sistolik min. ${BATAS.SBP_MIN} mmHg, Diastolik min. ${BATAS.DBP_MIN} mmHg.`;
-        } else {
-            pesan = `Nilai terlalu tinggi. Sistolik maks. ${BATAS.SBP_MAX} mmHg, Diastolik maks. ${BATAS.DBP_MAX} mmHg.`;
-        }
-
+    function showInvalidBPUI() {
         if (bpStatusEl) {
             bpStatusEl.style.setProperty('color', '#fff', 'important');
             bpStatusEl.style.setProperty('background-color', '#858796', 'important');
@@ -223,16 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
             bpCardEl.style.backgroundColor = '#f8f9fa';
             bpCardEl.style.border = '1px solid #85879618';
         }
-        if (mapScoreEl)  mapScoreEl.innerText = '--.-';
-        if (bpReadingEl) bpReadingEl.innerText = `${isNaN(sbp) ? '--' : sbp}/${isNaN(dbp) ? '--' : dbp}`;
-        if (pulseReadingEl) {
-            pulseReadingEl.innerText = '--';
-            pulseReadingEl.style.color = '';
-        }
-        if (pulseLabelEl) pulseLabelEl.innerHTML = 'bpm';
+        if (mapScoreEl)     mapScoreEl.innerText = '--.-';
+        if (bpReadingEl)    bpReadingEl.innerText = '--/--';
+        if (pulseReadingEl) { pulseReadingEl.innerText = '--'; pulseReadingEl.style.color = ''; }
+        if (pulseLabelEl)   pulseLabelEl.innerHTML = 'bpm';
         if (bpAdviceEl) {
             bpAdviceEl.style.color = '#5a5c69';
-            bpAdviceEl.innerHTML = `<i class="fas fa-times-circle mr-1"></i>${pesan}`;
+            bpAdviceEl.innerHTML   = `<i class="fas fa-times-circle mr-1"></i>Angka tidak valid.`;
         }
     }
 

@@ -11,14 +11,18 @@
         <div class="ehati-tabs">
             <ul class="nav nav-pills mb-0" id="mainTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="pemeriksaan-tab" data-toggle="pill" href="#pemeriksaanContent"
-                        role="tab" aria-controls="pemeriksaanContent" aria-selected="true">
+                    <a class="nav-link {{ (!isset($activeTab) || $activeTab !== 'riwayat') ? 'active' : '' }}"
+                       id="pemeriksaan-tab"
+                       href="{{ route('pemeriksaan') }}"
+                       role="tab">
                         <i class="fas fa-stethoscope mr-1"></i><span>Pemeriksaan</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="riwayat-tab" data-toggle="pill" href="#riwayatContent" role="tab"
-                        aria-controls="riwayatContent" aria-selected="false">
+                    <a class="nav-link {{ isset($activeTab) && $activeTab === 'riwayat' ? 'active' : '' }}"
+                       id="riwayat-tab"
+                       href="{{ route('pemeriksaanRiwayat') }}"
+                       role="tab">
                         <i class="fas fa-history mr-1"></i><span>Riwayat</span>
                     </a>
                 </li>
@@ -30,7 +34,7 @@
     <div class="tab-content" id="mainTabContent">
 
         {{-- ==================== TAB: PEMERIKSAAN ==================== --}}
-        <div class="tab-pane fade show active" id="pemeriksaanContent" role="tabpanel" aria-labelledby="pemeriksaan-tab">
+        <div id="pemeriksaanContent" style="{{ isset($activeTab) && $activeTab === 'riwayat' ? 'display:none;' : '' }}">
 
             <form action="{{ route('pemeriksaanStore') }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -531,20 +535,15 @@
         </div>
 
         {{-- ==================== TAB: RIWAYAT ==================== --}}
-        <div class="tab-pane fade" id="riwayatContent" role="tabpanel" aria-labelledby="riwayat-tab">
-            @include('admin.pemeriksaan.riwayat')
+        <div id="riwayatContent"
+        style="{{ !isset($activeTab) || $activeTab !== 'riwayat' ? 'display:none;' : '' }}">
+        @include('admin.pemeriksaan.riwayat')
         </div>
 
     </div>
 
-    {{-- Tab activation script --}}
-    @if (isset($activeTab) && $activeTab === 'riwayat')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                $('#riwayat-tab').tab('show');
-            });
-        </script>
-    @endif
+
+
 @endsection
 
 @include('admin.pemeriksaan.modal.bmi')

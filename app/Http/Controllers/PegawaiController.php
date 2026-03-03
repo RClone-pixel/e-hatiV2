@@ -28,7 +28,7 @@ use Maatwebsite\Excel\Facades\Excel;
  * Dokumentasi: https://github.com/barryvdh/laravel-dompdf
  ============================================================ */
 
-use PDF;
+ use Barryvdh\DomPDF\Facade\Pdf;
 
 class PegawaiController extends Controller
 {
@@ -73,17 +73,16 @@ class PegawaiController extends Controller
             'jenis_kelamin'     => 'required',
             'tanggal_lahir'     => 'required',
             'golongan_darah'    => 'required',
-            'riwayat_penyakit'  => 'required',
-            'foto'              => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'riwayat_penyakit'  => 'nullable',
+            'foto'              => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ], [
-            'nama.required'             => 'Nama tidak boleh kosong',
-            'jenis_kelamin.required'    => 'Jenis Kelamin tidak boleh kosong',
-            'tanggal_lahir.required'    => 'Tanggal Lahir tidak boleh kosong',
-            'golongan_darah.required'   => 'Golongan Darah harus dipilih',
-            'foto.required'             => 'Foto tidak boleh kosong',
-            'foto.image'                => 'File harus berupa gambar',
-            'foto.mimes'                => 'Format foto harus jpeg, jpg, png',
-            'foto.max'                  => 'Ukuran foto maksimal 2MB',
+            'nama.required'                 => 'Nama tidak boleh kosong',
+            'jenis_kelamin.required'        => 'Jenis Kelamin tidak boleh kosong',
+            'tanggal_lahir.required'        => 'Tanggal Lahir tidak boleh kosong',
+            'golongan_darah.required'       => 'Golongan Darah harus dipilih',
+            'foto.image'                    => 'File harus berupa gambar',
+            'foto.mimes'                    => 'Format foto harus jpeg, jpg, png',
+            'foto.max'                      => 'Ukuran foto maksimal 2MB',
         ]);
 
         $pegawai = new Pegawai;
@@ -94,11 +93,14 @@ class PegawaiController extends Controller
         $pegawai->gol_darah         = $request->golongan_darah;
         $pegawai->riwayat_penyakit  = $request->riwayat_penyakit;
 
+        $pegawai->riwayat_penyakit  = $request->riwayat_penyakit ?? 'Tidak Ada';
+
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
 
             if ($file->isValid()) {
-                $path = $file->store('foto-pegawai');
+                // Simpan ke disk 'public' agar bisa diakses via URL
+                $path = $file->store('foto-pegawai', 'public');
                 $pegawai->foto = $path;
             } else {
                 return back()->withErrors(['foto' => 'Gagal mengunggah foto'])->withInput();
@@ -143,7 +145,6 @@ class PegawaiController extends Controller
             'jenis_kelamin.required'    => 'Jenis Kelamin tidak boleh kosong',
             'tanggal_lahir.required'    => 'Tanggal Lahir tidak boleh kosong',
             'golongan_darah.required'   => 'Golongan Darah harus dipilih',
-            'foto.required'             => 'Foto tidak boleh kosong',
             'foto.image'                => 'File harus berupa gambar',
             'foto.mimes'                => 'Format foto harus jpeg, jpg, png',
             'foto.max'                  => 'Ukuran foto maksimal 2MB',
@@ -158,11 +159,19 @@ class PegawaiController extends Controller
         $pegawai->gol_darah         = $request->golongan_darah;
         $pegawai->riwayat_penyakit  = $request->riwayat_penyakit;
 
+        $pegawai->riwayat_penyakit  = $request->riwayat_penyakit ?? 'Tidak Ada';
+
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
 
             if ($file->isValid()) {
-                $path = $file->store('foto-pegawai');
+                // Hapus foto lama jika ada
+                if ($pegawai->foto && Storage::disk('public')->exists($pegawai->foto)) {
+                    Storage::disk('public')->delete($pegawai->foto);
+                }
+
+                // Simpan foto baru ke disk 'public'
+                $path = $file->store('foto-pegawai', 'public');
                 $pegawai->foto = $path;
             } else {
                 return back()->withErrors(['foto' => 'Gagal mengunggah foto'])->withInput();
@@ -182,6 +191,7 @@ class PegawaiController extends Controller
     {
         $pegawai = Pegawai::FindOrFail($id);
 
+        // Hapus foto dari storage jika ada
         if ($pegawai->foto && Storage::disk('public')->exists($pegawai->foto)) {
             Storage::disk('public')->delete($pegawai->foto);
         }
@@ -207,13 +217,19 @@ class PegawaiController extends Controller
      * 2. Laravel Excel akan generate file Excel
      * 3. File didownload dengan nama yang sudah diformat
      */
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
-        // Format nama file: Data_Pegawai_YYYYMMDD_His.xlsx
-        $fileName = 'Data_Pegawai_' . now()->format('Ymd_His') . '.xlsx';
+        $sort      = $request->query('sort', 'nama');
+        $direction = $request->query('dir', 'asc');
 
-        // Download file Excel
-        return Excel::download(new PegawaiExport, $fileName);
+        $allowedSorts = ['nama', 'jenis_kelamin', 'tanggal_lahir', 'umur', 'gol_darah'];
+        if (!in_array($sort, $allowedSorts)) $sort = 'nama';
+        if (!in_array($direction, ['asc', 'desc'])) $direction = 'asc';
+
+        $pegawai = Pegawai::orderBy($sort, $direction)->get();
+
+        $fileName = 'Data_Pegawai_' . now()->format('Ymd_His') . '.xlsx';
+        return Excel::download(new PegawaiExport($pegawai), $fileName);
     }
 
     /**
@@ -233,21 +249,22 @@ class PegawaiController extends Controller
      * 3. DomPDF akan merender HTML menjadi PDF
      * 4. File didownload dengan nama yang sudah diformat
      */
-    public function exportPdf()
+    public function exportPdf(Request $request)
     {
-        // Ambil semua data pegawai, urutkan berdasarkan nama
-        $pegawai = Pegawai::orderBy('nama', 'asc')->get();
+        $sort      = $request->query('sort', 'nama');      // default: nama
+        $direction = $request->query('dir', 'asc');         // default: asc
 
-        // Load view PDF dengan data pegawai
-        $pdf = PDF::loadView('admin.pegawai.pdf', compact('pegawai'));
+        // Whitelist kolom yang boleh disort (keamanan)
+        $allowedSorts = ['nama', 'jenis_kelamin', 'tanggal_lahir', 'umur', 'gol_darah'];
+        if (!in_array($sort, $allowedSorts)) $sort = 'nama';
+        if (!in_array($direction, ['asc', 'desc'])) $direction = 'asc';
 
-        // Set ukuran kertas (A4 portrait)
+        $pegawai = Pegawai::orderBy($sort, $direction)->get();
+
+        $pdf = Pdf::loadView('admin.pegawai.pdf', compact('pegawai', 'sort', 'direction'));
         $pdf->setPaper('A4', 'portrait');
 
-        // Format nama file: Data_Pegawai_YYYYMMDD_His.pdf
         $fileName = 'Data_Pegawai_' . now()->format('Ymd_His') . '.pdf';
-
-        // Download file PDF
         return $pdf->download($fileName);
     }
 
@@ -282,7 +299,7 @@ class PegawaiController extends Controller
         if ($pegawai->foto) {
             $data['foto_url'] = asset('storage/' . $pegawai->foto);
         } else {
-            $data['foto_url'] = asset('sbadmin2/img/img1.png');
+            $data['foto_url'] = asset('sbadmin2/img/user_kppn.png');
         }
 
         return response()->json($data);

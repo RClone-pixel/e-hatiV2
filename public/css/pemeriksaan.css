@@ -471,9 +471,31 @@
 }
 
 /* Premium Table */
+.ehati-table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid #e3e6f0;
+}
+.ehati-table-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+.ehati-table-wrapper::-webkit-scrollbar-track {
+    background: #f8f9fc;
+    border-radius: 6px;
+}
+.ehati-table-wrapper::-webkit-scrollbar-thumb {
+    background: #d1d3e2;
+    border-radius: 6px;
+}
+.ehati-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #4e73df;
+}
+
 .ehati-table {
     border-collapse: separate;
     border-spacing: 0;
+    width: 100%;
+    margin-bottom: 0;
 }
 .ehati-table thead th {
     background: linear-gradient(135deg, #f8f9fc, #eef0f8);
@@ -482,12 +504,22 @@
     font-size: 0.76rem;
     text-transform: uppercase;
     letter-spacing: 0.7px;
-    padding: 12px 10px;
+    padding: 14px 12px;
     border: none;
     border-bottom: 2px solid #e3e6f0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+.ehati-table thead th:hover {
+    background: linear-gradient(135deg, #eef0f8, #e3e6f0);
 }
 .ehati-table tbody td {
-    padding: 11px 10px;
+    padding: 13px 12px;
     vertical-align: middle;
     border-bottom: 1px solid #f1f3f8;
     font-size: 0.86rem;
@@ -495,7 +527,7 @@
     transition: background 0.2s ease;
 }
 .ehati-table tbody tr:hover td {
-    background: rgba(54, 185, 204, 0.03);
+    background: rgba(78, 115, 223, 0.03);
 }
 
 /* Status Badge */
@@ -549,8 +581,8 @@
     border: none;
     padding: 16px 22px;
     display: flex;
-        align-items: center;
-        justify-content: space-between;
+    align-items: center;
+    justify-content: space-between;
 }
 .ehati-modal-header .modal-title {
     color: #fff;
@@ -558,14 +590,14 @@
     font-size: 1rem;
 }
 .ehati-modal-header .close {
-        color: #fff;
-            opacity: 0.9;
-            margin: 0;
-            padding: 0;
-            line-height: 1;
-            font-size: 1.4rem;
-            text-shadow: none;
-            transition: opacity 0.2s;
+    color: #fff;
+    opacity: 0.9;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-size: 1.4rem;
+    text-shadow: none;
+    transition: opacity 0.2s;
 }
 .ehati-modal-header .close:hover {
     opacity: 1;
@@ -763,4 +795,106 @@
         padding: 0 8px;
         min-width: 65px;
     }
+}
+
+/* ============================================================
+   TABLE SORT ICONS — Riwayat Pemeriksaan
+   ============================================================ */
+
+/* Sort icons — light header (sama dengan pegawai-table) */
+.ehati-table thead th.sortable::after {
+    content: "\f0dc";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    margin-left: 6px;
+    font-size: 0.7rem;
+    color: #b7b9cc;
+}
+.ehati-table thead th.sort-asc::after {
+    content: "\f0de";
+    color: #4e73df;
+}
+.ehati-table thead th.sort-desc::after {
+    content: "\f0dd";
+    color: #4e73df;
+}
+
+/* ============================================================
+   PAGINATION — Bootstrap 4 override
+   Target: .ehati-pagination-wrap .pagination (Bootstrap 4 HTML)
+   Bootstrap 4 structure:
+   <ul class="pagination">
+     <li class="page-item [active|disabled]">
+       <a class="page-link" href="#">1</a>
+     </li>
+   </ul>
+   ============================================================ */
+
+.ehati-pagination-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f3f8;
+}
+
+.ehati-pagination-info {
+    font-size: 0.82rem;
+    color: #858796;
+}
+
+.ehati-pagination-info strong {
+    color: #3a3b45;
+    font-weight: 700;
+}
+
+/* Reset Bootstrap default */
+.ehati-pagination-wrap .pagination {
+    margin: 0 !important;
+    gap: 3px;
+}
+
+.ehati-pagination-wrap .page-item .page-link {
+    min-width: 34px !important;
+    height: 34px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    border: 1.5px solid #e3e6f0 !important;
+    background: #ffffff !important;
+    color: #5a5c69 !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    padding: 0 10px !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+    box-shadow: none !important;
+}
+
+.ehati-pagination-wrap .page-item .page-link:hover {
+    background: #f0f4ff !important;
+    border-color: #4e73df !important;
+    color: #4e73df !important;
+}
+
+/* Halaman aktif */
+.ehati-pagination-wrap .page-item.active .page-link {
+    background: linear-gradient(135deg, #4e73df, #224abe) !important;
+    border-color: #4e73df !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 8px rgba(78, 115, 223, 0.3) !important;
+}
+
+/* Disabled (prev/next di ujung) */
+.ehati-pagination-wrap .page-item.disabled .page-link {
+    background: #f8f9fc !important;
+    border-color: #e3e6f0 !important;
+    color: #c4c6d0 !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
 }

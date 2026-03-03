@@ -17,7 +17,6 @@ Bootstrap 4 Compatible
 }
 
 @keyframes dashboard-pulse {
-
     0%,
     100% {
         transform: scale(1);
@@ -201,7 +200,11 @@ Bootstrap 4 Compatible
     right: -20%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 70%
+    );
     border-radius: 50%;
 }
 
@@ -230,32 +233,6 @@ Bootstrap 4 Compatible
     transform: translateY(-50%);
 }
 
-/* --- Quick Stats Row --- */
-.dashboard-quick-stats {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.dashboard-quick-stat {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.dashboard-quick-stat i {
-    font-size: 1.1rem;
-}
-
-.dashboard-quick-stat span {
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
 /* --- Info Cards Grid --- */
 .dashboard-info-grid {
     display: grid;
@@ -275,33 +252,6 @@ Bootstrap 4 Compatible
 .dashboard-info-item:hover {
     background: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.dashboard-info-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    color: #fff;
-    margin-bottom: 10px;
-}
-
-.dashboard-info-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #858796;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-}
-
-.dashboard-info-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #3a3b45;
 }
 
 /* --- Responsive --- */
@@ -336,5 +286,351 @@ Bootstrap 4 Compatible
 @media (max-width: 575px) {
     .dashboard-info-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ============================================================
+   DASHBOARD CAROUSEL — e-HATi Style
+   Bootstrap 4 carousel override
+   ============================================================ */
+
+.dashboard-carousel {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.dashboard-carousel-inner {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.dashboard-carousel-slide {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* ── Slide 1: Video ── */
+.dashboard-carousel-slide-video {
+    background: #0a0f1e;
+}
+
+.dashboard-carousel-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+}
+
+/* FIX: pointer-events none agar klik tembus ke videoWrap */
+.dashboard-carousel-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.05) 0%,
+        rgba(0, 0, 0, 0.55) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ── Slide 2 & 3: Logo ── */
+.dashboard-carousel-slide-logo,
+.dashboard-carousel-slide-logo-alt {
+    background: linear-gradient(135deg, #36b9cc 0%, #1cc88a 100%);
+}
+
+.dashboard-carousel-logo {
+    max-height: 220px;
+    max-width: 60%;
+    object-fit: contain;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.12));
+    animation: dashboard-pulse 3s ease-in-out infinite;
+}
+
+.dashboard-carousel-slide-logo .dashboard-carousel-logo,
+.dashboard-carousel-slide-logo-alt .dashboard-carousel-logo {
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.15));
+}
+
+/* ── Caption — pointer-events none agar tidak blokir klik ── */
+.dashboard-carousel-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 32px 24px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.65) 0%,
+        transparent 100%
+    );
+    z-index: 10;
+    text-align: left;
+    pointer-events: none;
+}
+
+.dashboard-carousel-caption h5 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 5px;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-carousel-caption p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.dashboard-carousel-slide-logo + .dashboard-carousel-caption {
+    background: linear-gradient(
+        to top,
+        rgba(78, 115, 223, 0.55) 0%,
+        transparent 100%
+    );
+}
+
+/* ── Indicators ── */
+.dashboard-carousel-indicators {
+    bottom: 8px;
+    z-index: 20;
+    margin-bottom: 0;
+}
+
+.dashboard-carousel-indicators li {
+    width: 28px;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    transition: all 0.35s ease;
+    margin: 0 3px;
+}
+
+.dashboard-carousel-indicators li.active {
+    background: #ffffff;
+    width: 42px;
+}
+
+/* ── Controls ── */
+.dashboard-carousel-control {
+    width: 9%;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dashboard-carousel:hover .dashboard-carousel-control {
+    opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 50%;
+    background-size: 55%;
+}
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+    .dashboard-carousel-slide {
+        height: 260px;
+    }
+
+    .dashboard-carousel-logo {
+        max-height: 130px;
+        max-width: 70%;
+    }
+
+    .dashboard-carousel-caption h5 {
+        font-size: 0.9rem;
+    }
+
+    .dashboard-carousel-caption p {
+        font-size: 0.78rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .dashboard-carousel-slide {
+        height: 210px;
+    }
+}
+
+/* ── Video Wrap: kursor + hint hover ── */
+/* FIX: z-index 2 agar wrap di atas overlay (z-index 1) */
+.dashboard-carousel-video-wrap {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.dashboard-carousel-video-wrap:hover .dashboard-video-hint {
+    opacity: 1;
+}
+
+.dashboard-video-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    text-align: center;
+}
+
+.dashboard-video-hint-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-video-hint-text {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
+}
+
+/* ============================================================
+   VIDEO MODAL — e-HATi Style
+   ============================================================ */
+
+.video-modal-content {
+    border-radius: 18px !important;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+}
+
+/* Header */
+.video-modal-header {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.video-modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.video-modal-icon {
+    width: 34px;
+    height: 34px;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.video-modal-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.video-modal-close {
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.video-modal-close:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
+/* Body: video player */
+.video-modal-body {
+    background: #0a0f1e;
+    padding: 0;
+}
+
+.video-modal-player-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.video-modal-player {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Footer */
+.video-modal-footer {
+    background: #fff;
+    padding: 14px 20px;
+    border-top: 1px solid #f1f3f8;
+    font-size: 0.85rem;
+    color: #5a5c69;
+    display: flex;
+    align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+    .video-modal-title {
+        font-size: 0.88rem;
+    }
+
+    .video-modal-footer {
+        font-size: 0.78rem;
     }
 }

@@ -18,10 +18,10 @@
                     <a href="{{ route('pegawaiCreate') }}" class="pegawai-btn-add mr-2 mb-1">
                         <i class="fas fa-plus mr-1"></i> Tambah Data
                     </a>
-                    <a href="{{ route('pegawaiExportExcel') }}" class="btn btn-sm btn-success pegawai-btn-export mr-2 mb-1">
+                    <a href="{{ route('pegawaiExportExcel') }}" id="btnExportExcel" class="btn btn-sm btn-success pegawai-btn-export mr-2 mb-1">
                         <i class="fas fa-file-excel mr-1"></i> Excel
                     </a>
-                    <a href="{{ route('pegawaiExportPdf') }}" class="btn btn-sm btn-danger pegawai-btn-export mb-1">
+                    <a href="{{ route('pegawaiExportPdf') }}" id="btnExportPdf" class="btn btn-sm btn-danger pegawai-btn-export mb-1">
                         <i class="fas fa-file-pdf mr-1"></i> PDF
                     </a>
                 </div>
@@ -111,7 +111,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <button type="button" class="pegawai-btn-action pegawai-btn-delete"
-                                                data-toggle="modal" data-target="#exampleModal{{ $item->id }}"
+                                                data-toggle="modal" data-target="#deleteModal{{ $item->id }}"
                                                 title="Hapus">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>

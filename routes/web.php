@@ -14,6 +14,11 @@ Route::get('/', function () {
 // ============================================================
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+// Export Excel Pegawai
+Route::get('pegawai/export-excel', [PegawaiController::class, 'exportExcel'])->name('pegawaiExportExcel');
+// Export PDF Pegawai
+Route::get('pegawai/export-pdf', [PegawaiController::class, 'exportPdf'])->name('pegawaiExportPdf');
+
 // ============================================================
 // PEGAWAI ROUTES
 // ============================================================
@@ -24,31 +29,6 @@ Route::get('pegawai/edit/{id}', [PegawaiController::class, 'edit'])->name('pegaw
 Route::post('pegawai/update/{id}', [PegawaiController::class, 'update'])->name('pegawaiUpdate');
 Route::delete('pegawai/delete/{id}', [PegawaiController::class, 'delete'])->name('pegawaiDelete');
 
-/**
- * ============================================================
- * EXPORT PEGAWAI - EXCEL & PDF
- * ============================================================
- *
- * Route untuk export data pegawai ke Excel dan PDF
- *
- * CARA PENAMBAHAN:
- * 1. Pastikan sudah install package:
- *    - composer require maatwebsite/excel
- *    - composer require barryvdh/laravel-dompdf
- *
- * 2. Method ada di PegawaiController:
- *    - exportExcel() untuk export Excel
- *    - exportPdf() untuk export PDF
- *
- * 3. File terkait:
- *    - App\Exports\PegawaiExport (untuk Excel)
- *    - resources/views/admin/pegawai/pdf.blade.php (untuk PDF)
- */
-// Export Excel Pegawai
-Route::get('pegawai/export-excel', [PegawaiController::class, 'exportExcel'])->name('pegawaiExportExcel');
-// Export PDF Pegawai
-Route::get('pegawai/export-pdf', [PegawaiController::class, 'exportPdf'])->name('pegawaiExportPdf');
-
 // ============================================================
 // PEMERIKSAAN ROUTES
 // ============================================================
@@ -58,26 +38,6 @@ Route::get('pemeriksaan/riwayat', [PemeriksaanController::class, 'riwayat'])->na
 Route::get('pemeriksaan/riwayat/{id}', [PemeriksaanController::class, 'show'])->name('pemeriksaanShow');
 Route::delete('pemeriksaan/delete/{id}', [PemeriksaanController::class, 'destroy'])->name('pemeriksaanDelete');
 
-/**
- * ============================================================
- * EXPORT PEMERIKSAAN - EXCEL & PDF
- * ============================================================
- *
- * Route untuk export data pemeriksaan/riwayat ke Excel dan PDF
- *
- * CARA PENAMBAHAN:
- * 1. Pastikan sudah install package:
- *    - composer require maatwebsite/excel
- *    - composer require barryvdh/laravel-dompdf
- *
- * 2. Method ada di PemeriksaanController:
- *    - exportExcel() untuk export Excel
- *    - exportPdf() untuk export PDF
- *
- * 3. File terkait:
- *    - App\Exports\PemeriksaanExport (untuk Excel)
- *    - resources/views/admin/pemeriksaan/pdf.blade.php (untuk PDF)
- */
 // Export Excel Pemeriksaan
 Route::get('pemeriksaan/export-excel', [PemeriksaanController::class, 'exportExcel'])->name('pemeriksaanExportExcel');
 // Export PDF Pemeriksaan

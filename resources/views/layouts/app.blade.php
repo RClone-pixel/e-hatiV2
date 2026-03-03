@@ -175,6 +175,9 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('sbadmin2/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('sbadmin2/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/dashboard-carousel.js') }}"></script>
+
+
 
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('sbadmin2/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
@@ -215,6 +218,8 @@
     <script src="{{ asset('js/pegawai.js') }}"></script>
 
 
+    @stack('styles')
+    @stack('scripts')
 
     @session('success')
         <script>

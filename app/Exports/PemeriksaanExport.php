@@ -7,190 +7,177 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-/**
- * ============================================================
- * PEMERIKSAAN EXPORT - Export Data Riwayat Pemeriksaan ke Excel
- * ============================================================
- *
- * Package: maatwebsite/excel (Laravel Excel)
- * Dokumentasi: https://docs.laravel-excel.com/3.1/
- *
- * Install:
- * composer require maatwebsite/excel
- *
- * Fitur:
- * - Export seluruh data pemeriksaan ke format Excel (.xlsx)
- * - Dengan header yang jelas
- * - Format tanggal yang readable
- * - Perhitungan BMI otomatis
- *
- * CARA MENAMBAH KOLOM BARU:
- * 1. Tambahkan heading di method headings()
- * 2. Tambahkan data di method map()
- * 3. Sesuaikan styling jika diperlukan
- */
-
-class PemeriksaanExport implements FromCollection, WithHeadings, WithMapping, WithStyles
+class PemeriksaanExport implements FromCollection, WithHeadings, WithMapping, WithStyles, ShouldAutoSize
 {
-    /**
-     * Mengambil seluruh data pemeriksaan untuk diekspor
-     * Data diurutkan berdasarkan tanggal pemeriksaan (terbaru dulu)
-     * Include relasi pegawai untuk mengambil nama pegawai
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    protected $pemeriksaan;
+
+    public function __construct($pemeriksaan)
     {
-        return Pemeriksaan::with('pegawai')
-            ->orderBy('tanggal_pemeriksaan', 'desc')
-            ->get();
+        $this->pemeriksaan = $pemeriksaan;
     }
 
-    /**
-     * ============================================================
-     * HEADER KOLOM EXCEL
-     * ============================================================
-     *
-     * Definisi nama kolom yang akan muncul di baris pertama Excel
-     * Urutan harus sesuai dengan method map() di bawah
-     *
-     * CARA MENAMBAH KOLOM:
-     * Tambahkan string baru di array ini
-     */
+    public function collection()
+    {
+        return $this->pemeriksaan;
+    }
+
     public function headings(): array
     {
         return [
-            'No.',                  // Kolom A - Nomor urut
-            'Nama Pegawai',         // Kolom B - Nama pegawai (dari relasi)
-            'Tanggal Pemeriksaan',  // Kolom C - Format: DD-MM-YYYY
-            'Status Puasa',         // Kolom D - Puasa / Tidak Puasa
-
-            // BMI Section
-            'Tinggi Badan (cm)',    // Kolom E
-            'Berat Badan (kg)',     // Kolom F
-            'BMI',                  // Kolom G - Dihitung otomatis
-
-            // Tekanan Darah Section
-            'Sistolik (mmHg)',      // Kolom H
-            'Diastolik (mmHg)',     // Kolom I
-            'Nadi (bpm)',           // Kolom J
-
-            // Laboratorium Section
-            'Gula Darah (mg/dL)',   // Kolom K
-            'Parameter Gula',       // Kolom L - GDS/GDP/GD2PP
-            'Kolesterol (mg/dL)',   // Kolom M
-            'Asam Urat (mg/dL)',    // Kolom N
-
-            // Catatan
-            'Catatan Dokter',       // Kolom O
+            'No',
+            'Nama Pegawai',
+            'Tanggal Pemeriksaan',
+            'Tinggi Badan (cm)',
+            'Berat Badan (kg)',
+            'BMI',
+            'Status BMI',
+            'Sistolik (mmHg)',
+            'Diastolik (mmHg)',
+            'MAP',
+            'Status Tekanan Darah',
+            'Denyut Nadi (bpm)',
+            'Konsentrasi Glukosa (mg/dL)',  // kolom DB: konsentrasi_glukosa
+            'Parameter Gula',
+            'Status Gula Darah',
+            'Kolesterol Total (mg/dL)',
+            'Status Kolesterol',
+            'Asam Urat (mg/dL)',
+            'Status Asam Urat',
+            'Catatan Dokter',
         ];
     }
 
-    /**
-     * ============================================================
-     * MAPPING DATA KE KOLOM
-     * ============================================================
-     *
-     * Mengubah object Pemeriksaan menjadi array untuk setiap baris Excel
-     * Urutan harus sesuai dengan headings() di atas
-     *
-     * @param Pemeriksaan $pemeriksaan
-     * @return array
-     */
     public function map($pemeriksaan): array
     {
-        // Static counter untuk nomor urut
         static $no = 0;
         $no++;
 
-        // Hitung BMI jika data tersedia
-        $bmi = '-';
+        // BMI
+        $bmi = null;
+        $bmiStatus = '-';
         if ($pemeriksaan->tinggi_badan > 0 && $pemeriksaan->berat_badan > 0) {
-            $bmiValue = $pemeriksaan->berat_badan / pow($pemeriksaan->tinggi_badan / 100, 2);
-            $bmi = number_format($bmiValue, 1);
+            $bmi = round($pemeriksaan->berat_badan / ($pemeriksaan->tinggi_badan / 100) ** 2, 1);
+            if      ($bmi < 16)    $bmiStatus = 'Kekurangan Tingkat III';
+            elseif  ($bmi < 17)    $bmiStatus = 'Kekurangan Tingkat II';
+            elseif  ($bmi < 18.5)  $bmiStatus = 'Kekurangan Tingkat I';
+            elseif  ($bmi <= 24.9) $bmiStatus = 'Normal/Ideal';
+            elseif  ($bmi <= 29.9) $bmiStatus = 'Kelebihan Berat Badan';
+            elseif  ($bmi <= 34.9) $bmiStatus = 'Obesitas Tingkat I';
+            elseif  ($bmi <= 39.9) $bmiStatus = 'Obesitas Tingkat II';
+            else                    $bmiStatus = 'Obesitas Tingkat III';
+        }
+
+        // MAP
+        $map = null;
+        if ($pemeriksaan->sistolik && $pemeriksaan->diastolik) {
+            $map = round(($pemeriksaan->sistolik + (2 * $pemeriksaan->diastolik)) / 3, 1);
+        }
+
+        // Tekanan Darah
+        $bpStatus = '-';
+        if ($pemeriksaan->sistolik && $pemeriksaan->diastolik) {
+            $sbp = $pemeriksaan->sistolik;
+            $dbp = $pemeriksaan->diastolik;
+            if      ($sbp > 180 || $dbp > 120)                                           $bpStatus = 'Krisis Hipertensi';
+            elseif  ($sbp >= 140 || $dbp >= 90)                                           $bpStatus = 'Hipertensi Derajat 2';
+            elseif  (($sbp >= 130 && $sbp <= 139) || ($dbp >= 80 && $dbp <= 89))         $bpStatus = 'Hipertensi Derajat 1';
+            elseif  ($sbp >= 120 && $sbp <= 129 && $dbp < 80)                            $bpStatus = 'Prehipertensi';
+            elseif  ($sbp < 120 && $dbp < 80)                                            $bpStatus = 'Optimal/Normal';
+            elseif  ($sbp < 90 && $dbp < 60)                                             $bpStatus = 'Hipotensi';
+        }
+
+        // Gula Darah — pakai konsentrasi_glukosa (kolom DB)
+        $bsStatus = '-';
+        if ($pemeriksaan->konsentrasi_glukosa && $pemeriksaan->parameter_gula) {
+            $nilai = $pemeriksaan->konsentrasi_glukosa;
+            switch ($pemeriksaan->parameter_gula) {
+                case 'GDP':
+                    if      ($nilai < 110)  $bsStatus = 'Normal';
+                    elseif  ($nilai <= 125) $bsStatus = 'Prediabetes';
+                    else                    $bsStatus = 'Diabetes';
+                    break;
+                case 'GD2PP':
+                    if      ($nilai < 140)  $bsStatus = 'Normal';
+                    elseif  ($nilai <= 179) $bsStatus = 'Prediabetes';
+                    else                    $bsStatus = 'Diabetes';
+                    break;
+                case 'GDS':
+                    if      ($nilai < 180)  $bsStatus = 'Normal';
+                    elseif  ($nilai <= 199) $bsStatus = 'Waspada';
+                    else                    $bsStatus = 'Diabetes';
+                    break;
+            }
+        }
+
+        // Kolesterol
+        $cholStatus = '-';
+        if ($pemeriksaan->kolesterol_total) {
+            if      ($pemeriksaan->kolesterol_total < 200)  $cholStatus = 'Normal';
+            elseif  ($pemeriksaan->kolesterol_total <= 239) $cholStatus = 'Borderline';
+            else                                             $cholStatus = 'Tinggi';
+        }
+
+        // Asam Urat
+        $uaStatus = '-';
+        if ($pemeriksaan->asam_urat && $pemeriksaan->pegawai) {
+            $umur  = $pemeriksaan->pegawai->umur;
+            $jk    = strtolower($pemeriksaan->pegawai->jenis_kelamin);
+            $nilai = $pemeriksaan->asam_urat;
+            $laki  = str_contains($jk, 'laki');
+
+            if ($umur >= 60) {
+                $min = $laki ? 3.5 : 2.7;
+                $max = $laki ? 8.0 : 7.3;
+            } else {
+                $min = $laki ? 3.5 : 2.6;
+                $max = $laki ? 7.2 : 6.0;
+            }
+            if      ($nilai < $min) $uaStatus = 'Rendah';
+            elseif  ($nilai <= $max) $uaStatus = 'Normal';
+            else                     $uaStatus = 'Tinggi';
         }
 
         return [
-            $no,                                                    // No.
-            $pemeriksaan->pegawai->nama ?? '-',                    // Nama Pegawai
-            $pemeriksaan->tanggal_pemeriksaan->format('d-m-Y'),     // Tanggal Pemeriksaan
-            $pemeriksaan->puasa ? 'Puasa' : 'Tidak Puasa',          // Status Puasa
-
-            // BMI
-            $pemeriksaan->tinggi_badan ?: '-',                      // Tinggi Badan
-            $pemeriksaan->berat_badan ?: '-',                       // Berat Badan
-            $bmi,                                                   // BMI
-
-            // Tekanan Darah
-            $pemeriksaan->sistolik ?: '-',                          // Sistolik
-            $pemeriksaan->diastolik ?: '-',                         // Diastolik
-            $pemeriksaan->nadi ?: '-',                              // Nadi
-
-            // Laboratorium
-            $pemeriksaan->konsentrasi_glukosa ?: '-',                  // Gula Darah
-            $pemeriksaan->parameter_gula ?: '-',                    // Parameter Gula
-            $pemeriksaan->kolesterol_total ?: '-',                  // Kolesterol
-            $pemeriksaan->asam_urat ?: '-',                         // Asam Urat
-
-            // Catatan
-            $pemeriksaan->catatan_dokter ?: '-',                    // Catatan Dokter
+            $no,
+            $pemeriksaan->pegawai->nama ?? '-',
+            $pemeriksaan->tanggal_pemeriksaan ? $pemeriksaan->tanggal_pemeriksaan->format('d-m-Y') : '-',
+            $pemeriksaan->tinggi_badan ?? '-',
+            $pemeriksaan->berat_badan ?? '-',
+            $bmi ?? '-',
+            $bmiStatus,
+            $pemeriksaan->sistolik ?? '-',
+            $pemeriksaan->diastolik ?? '-',
+            $map ?? '-',
+            $bpStatus,
+            $pemeriksaan->nadi ?? '-',
+            $pemeriksaan->konsentrasi_glukosa ?? '-',  // kolom DB
+            $pemeriksaan->parameter_gula ?? '-',
+            $bsStatus,
+            $pemeriksaan->kolesterol_total ?? '-',
+            $cholStatus,
+            $pemeriksaan->asam_urat ?? '-',
+            $uaStatus,
+            $pemeriksaan->catatan_dokter ?? '-',
         ];
     }
 
-    /**
-     * ============================================================
-     * STYLING EXCEL
-     * ============================================================
-     *
-     * Memberikan style pada worksheet Excel
-     * - Header: Bold, background biru, teks putih
-     * - Auto-width kolom
-     * - Alignment untuk kolom tertentu
-     *
-     * @param Worksheet $sheet
-     */
     public function styles(Worksheet $sheet)
     {
-        // Style untuk header (baris 1)
-        $sheet->getStyle('A1:O1')->applyFromArray([
-            'font' => [
-                'bold' => true,                 // Teks tebal
-                'color' => ['rgb' => 'FFFFFF'], // Warna teks putih
-                'size' => 11,
-            ],
-            'fill' => [
-                'fillType' => 'solid',
-                'startColor' => ['rgb' => '36B9CC'], // Background biru muda (teal)
-            ],
-            'alignment' => [
-                'horizontal' => 'center',       // Teks di tengah
-                'vertical' => 'center',
-                'wrapText' => true,             // Wrap text untuk header panjang
-            ],
+        $sheet->getStyle('A1:T1')->applyFromArray([
+            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+            'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '4E73DF']],
+            'alignment' => ['horizontal' => 'center', 'vertical' => 'center'],
         ]);
 
-        // Auto-width untuk semua kolom
-        foreach (range('A', 'O') as $column) {
-            $sheet->getColumnDimension($column)->setAutoSize(true);
+        foreach (range('A', 'T') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
         }
 
-        // Alignment center untuk kolom numerik
-        $sheet->getStyle('A:A')->getAlignment()->setHorizontal('center');   // No
-        $sheet->getStyle('E:E')->getAlignment()->setHorizontal('center');   // Tinggi
-        $sheet->getStyle('F:F')->getAlignment()->setHorizontal('center');   // Berat
-        $sheet->getStyle('G:G')->getAlignment()->setHorizontal('center');   // BMI
-        $sheet->getStyle('H:H')->getAlignment()->setHorizontal('center');   // Sistolik
-        $sheet->getStyle('I:I')->getAlignment()->setHorizontal('center');   // Diastolik
-        $sheet->getStyle('J:J')->getAlignment()->setHorizontal('center');   // Nadi
-        $sheet->getStyle('K:K')->getAlignment()->setHorizontal('center');   // Gula
-        $sheet->getStyle('M:M')->getAlignment()->setHorizontal('center');   // Kolesterol
-        $sheet->getStyle('N:N')->getAlignment()->setHorizontal('center');   // Asam Urat
+        $sheet->getRowDimension(1)->setRowHeight(28);
 
-        // Set tinggi baris header
-        $sheet->getRowDimension(1)->setRowHeight(30);
-
-        return [];
+        return $sheet;
     }
 }

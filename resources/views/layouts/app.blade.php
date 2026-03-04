@@ -36,6 +36,16 @@
 
 <body id="page-top">
 
+    {{-- SVG Gradient Definitions for Progress Ring --}}
+    <svg class="ehati-progress-defs">
+        <defs>
+            <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#36b9cc;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#1cc88a;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -175,9 +185,8 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('sbadmin2/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('sbadmin2/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
     <script src="{{ asset('js/dashboard-carousel.js') }}"></script>
-
-
 
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('sbadmin2/vendor/jquery-easing/jquery.easing.min.js') }}"></script>

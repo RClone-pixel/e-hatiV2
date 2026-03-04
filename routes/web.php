@@ -9,6 +9,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('home', function () {
+    return view('test');
+});
+
 // ============================================================
 // DASHBOARD
 // ============================================================
@@ -48,3 +52,5 @@ Route::get('pemeriksaan/export-pdf', [PemeriksaanController::class, 'exportPdf']
 // ============================================================
 Route::get('/ajax/pegawai', [PegawaiController::class, 'ajaxIndex'])->name('ajaxPegawai');
 Route::get('/ajax/pegawai/{id}', [PegawaiController::class, 'ajaxShow'])->name('ajaxShow');
+
+

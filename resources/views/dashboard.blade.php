@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@include('partials.modal-video')
-
 @section('content')
 
     {{-- ============================================================
@@ -194,5 +192,7 @@
 
         </div>
     </div>
+
+    @include('partials.modal-video')
 
 @endsection

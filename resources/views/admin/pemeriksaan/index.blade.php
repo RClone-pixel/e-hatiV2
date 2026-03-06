@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
+<link rel="icon" href="{{ asset('sbadmin2/img/icon_e-hati_v3.svg') }}" type="image/svg+xml">
+
 @section('content')
+
     <h1 class="h3 mb-4 text-gray-800">
         <i class="fas fa-check mr-2"></i>
         {{ $title }}

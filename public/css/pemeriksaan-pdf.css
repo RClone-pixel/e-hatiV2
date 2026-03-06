@@ -1,0 +1,323 @@
+/* ============================================================
+   e-HATi — Pemeriksaan PDF CSS
+   File  : public/css/pemeriksaan-pdf.css
+   Landscape A4 — matching pegawai-pdf.css design language
+   ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "DejaVu Sans", "Helvetica", "Arial", sans-serif;
+  font-size: 7.5pt;
+  line-height: 1.45;
+  color: #3a3b45;
+  background: #ffffff;
+  padding: 20px 24px;
+}
+
+/* ============================================================
+   HEADER  — identical structure to pegawai-pdf, teal accent
+   ============================================================ */
+.header {
+  text-align: center;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 2.5px solid #36b9cc;
+}
+
+.header-title {
+  font-size: 18pt;
+  font-weight: 900;
+  color: #36b9cc;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.header-sub {
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: #5a5c69;
+  margin-bottom: 2px;
+}
+
+.header-org {
+  font-size: 7.8pt;
+  font-weight: 400;
+  color: #858796;
+}
+
+.header-date {
+  font-size: 7pt;
+  font-weight: 400;
+  color: #b7b9cc;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   INFO BAR  — same pattern as pegawai-pdf
+   ============================================================ */
+.info-bar {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0 14px 0;
+}
+
+.info-bar td {
+  border: none;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.info-total {
+  font-size: 8pt;
+  font-weight: 400;
+  color: #858796;
+}
+
+.info-total strong {
+  font-size: 10pt;
+  font-weight: 900;
+  color: #3a3b45;
+}
+
+.info-total span {
+  font-size: 8pt;
+  font-weight: 700;
+  color: #36b9cc;
+}
+
+.info-right {
+  text-align: right;
+  font-size: 7pt;
+  color: #b7b9cc;
+}
+
+/* ============================================================
+   DATA TABLE
+   ============================================================ */
+table.pdf-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.pdf-table thead th {
+  background: #36b9cc;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 6.5pt;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px 5px;
+  text-align: center;
+  border: none;
+}
+
+/* left-align nama column header */
+table.pdf-table thead th.th-nama {
+  text-align: left;
+  padding-left: 8px;
+}
+
+table.pdf-table tbody td {
+  padding: 6px 5px;
+  font-size: 7.5pt;
+  color: #5a5c69;
+  border-bottom: 1px solid #eaecf4;
+  vertical-align: middle;
+}
+
+table.pdf-table tbody td:first-child {
+  padding-left: 8px;
+}
+
+table.pdf-table tbody td:last-child {
+  padding-right: 8px;
+}
+
+table.pdf-table tbody tr:nth-child(even) td {
+  background: #f8f9fc;
+}
+
+table.pdf-table tbody tr:nth-child(odd) td {
+  background: #ffffff;
+}
+
+table.pdf-table tbody tr:last-child td {
+  border-bottom: 2px solid #d1d3e2;
+}
+
+/* ============================================================
+   COLUMN WIDTHS  (landscape A4 = ~277mm usable)
+   ============================================================ */
+.col-no {
+  width: 22px;
+  text-align: center;
+}
+.col-nama {
+  width: 12%;
+}
+.col-tgl {
+  width: 7%;
+  text-align: center;
+}
+.col-num {
+  width: 4%;
+  text-align: center;
+}
+.col-bmi {
+  width: 4%;
+  text-align: center;
+}
+.col-stat {
+  width: 8%;
+  text-align: center;
+}
+.col-td {
+  width: 5.5%;
+  text-align: center;
+}
+.col-nadi {
+  width: 3.5%;
+  text-align: center;
+}
+.col-gula {
+  width: 4.5%;
+  text-align: center;
+}
+.col-param {
+  width: 4%;
+  text-align: center;
+}
+.col-kol {
+  width: 4.5%;
+  text-align: center;
+}
+.col-au {
+  width: 4.5%;
+  text-align: center;
+}
+.col-catat {
+  text-align: left;
+}
+
+/* ============================================================
+   CELL TYPOGRAPHY  — matching pegawai-pdf td- classes
+   ============================================================ */
+.td-no {
+  font-size: 7pt;
+  font-weight: 700;
+  color: #c4c6d0;
+  text-align: center;
+}
+
+.td-nama {
+  font-size: 8pt;
+  font-weight: 800;
+  color: #2e2f38;
+}
+
+.td-secondary {
+  font-size: 7.5pt;
+  font-weight: 400;
+  color: #6b6d7a;
+  text-align: center;
+}
+
+.td-num {
+  font-size: 8pt;
+  font-weight: 700;
+  color: #2e2f38;
+  text-align: center;
+}
+
+.td-td {
+  font-size: 7.8pt;
+  font-weight: 700;
+  color: #2e2f38;
+  text-align: center;
+}
+
+.td-catat {
+  font-size: 7pt;
+  font-weight: 400;
+  color: #6b6d7a;
+}
+
+/* ============================================================
+   STATUS BADGES  — matching pegawai-pdf badge style
+   ============================================================ */
+.badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 20px;
+  font-size: 6.5pt;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* Normal / Good */
+.badge-normal {
+  background: #e6f7ef;
+  color: #1e7e50;
+  border: 1px solid #9ed5b8;
+}
+
+/* Warning / Borderline */
+.badge-warning {
+  background: #fff8e6;
+  color: #a06500;
+  border: 1px solid #f8d77e;
+}
+
+/* Danger / High */
+.badge-danger {
+  background: #fde8e6;
+  color: #a31a0d;
+  border: 1px solid #f5b0aa;
+}
+
+/* Info / Low */
+.badge-info {
+  background: #e3f2f7;
+  color: #0c6478;
+  border: 1px solid #9bd5e3;
+}
+
+/* ============================================================
+   FOOTER  — identical to pegawai-pdf
+   ============================================================ */
+.footer {
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px solid #e3e6f0;
+  text-align: center;
+}
+
+.footer-main {
+  font-size: 7.5pt;
+  font-weight: 700;
+  color: #5a5c69;
+  margin-bottom: 2px;
+}
+
+.footer-main strong {
+  color: #36b9cc;
+}
+
+.footer-copy {
+  font-size: 7pt;
+  font-weight: 400;
+  color: #b7b9cc;
+}
+
+/* ============================================================
+   PAGE BREAK
+   ============================================================ */
+tbody tr {
+  page-break-inside: avoid;
+}

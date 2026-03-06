@@ -1,12 +1,12 @@
 {{-- ============================================================
 RIWAYAT TAB – resources/views/admin/pemeriksaan/riwayat.blade.php
 
-Perubahan dari original:
-- Filter: dari_tanggal + sampai_tanggal → tanggal_pemeriksaan (single)
-- Hapus 4 stat card (dipindah ke dashboard)
-- Tambah sort header tabel (client-side JS)
-- Export URL otomatis bawa filter + sort aktif
-- Fix field: nilai_glukometer → konsentrasi_glukosa
+Klasifikasi badge disinkronkan dengan 5 kalkulator JS:
+  bmi.js         → 8 level (Kkrg III → Obesitas III)
+  bloodpressure.js → 7 level (Krisis Hipotensi → Krisis Hipertensi)
+  bloodsugar.js  → 8 level + spesifik GDP / GD2PP / GDS
+  cholesterol.js → 5 level (Rendah → Sangat Tinggi, batas < 240)
+  uricacid.js    → 4 level per gender (Rendah / Normal / Tinggi / Sangat Tinggi)
 ============================================================ --}}
 
 {{-- === Search / Filter === --}}
@@ -86,6 +86,112 @@ Perubahan dari original:
                 </thead>
                 <tbody>
                     @foreach ($riwayat as $i => $r)
+                        @php
+                            /* ================================================================
+                               BMI — sync bmi.js classifyBMI()
+                               level -3: < 16    | -2: 16–16.9 | -1: 17–18.4 | 0: 18.5–24.9
+                               level  1: 25–29.9 |  2: 30–34.9 |  3: 35–39.9 | 4: >= 40
+                               ================================================================ */
+                            $bmi = null;
+                            $bmiLabel = null; $bmiClass = null;
+                            if ($r->tinggi_badan > 0 && $r->berat_badan > 0) {
+                                $bmi = round($r->berat_badan / ($r->tinggi_badan / 100) ** 2, 1);
+                                if      ($bmi < 16)   { $bmiLabel = 'Kkrg III';   $bmiClass = 'ehati-badge-danger'; }
+                                elseif  ($bmi < 17)   { $bmiLabel = 'Kkrg II';    $bmiClass = 'ehati-badge-danger'; }
+                                elseif  ($bmi < 18.5) { $bmiLabel = 'Kkrg I';     $bmiClass = 'ehati-badge-warning'; }
+                                elseif  ($bmi < 25)   { $bmiLabel = 'Normal';     $bmiClass = 'ehati-badge-normal'; }
+                                elseif  ($bmi < 30)   { $bmiLabel = 'Kelebihan';  $bmiClass = 'ehati-badge-warning'; }
+                                elseif  ($bmi < 35)   { $bmiLabel = 'Obesitas I'; $bmiClass = 'ehati-badge-danger'; }
+                                elseif  ($bmi < 40)   { $bmiLabel = 'Obesitas II';$bmiClass = 'ehati-badge-danger'; }
+                                else                  { $bmiLabel = 'Obesitas III';$bmiClass = 'ehati-badge-danger'; }
+                            }
+
+                            /* ================================================================
+                               TEKANAN DARAH — sync bloodpressure.js classifyBP()
+                               Zona atas (tertinggi duluan), lalu zona bawah, lalu normal
+                               ================================================================ */
+                            $bpLabel = null; $bpClass = null;
+                            if ($r->sistolik && $r->diastolik) {
+                                $s = (int) $r->sistolik;
+                                $d = (int) $r->diastolik;
+                                if      ($s > 180 || $d > 120)              { $bpLabel = 'Krisis HT';  $bpClass = 'ehati-badge-danger'; }
+                                elseif  ($s >= 160 || $d >= 100)            { $bpLabel = 'HT Drj 2';   $bpClass = 'ehati-badge-danger'; }
+                                elseif  ($s >= 140 || $d >= 90)             { $bpLabel = 'HT Drj 1';   $bpClass = 'ehati-badge-danger'; }
+                                elseif  ($s >= 120 || $d >= 80)             { $bpLabel = 'Pre-HT';     $bpClass = 'ehati-badge-warning'; }
+                                elseif  ($s < 70  || $d < 40)               { $bpLabel = 'Krisis Hipo';$bpClass = 'ehati-badge-danger'; }
+                                elseif  ($s < 90  || $d < 60)               { $bpLabel = 'Hipotensi';  $bpClass = 'ehati-badge-info'; }
+                                else                                         { $bpLabel = 'Normal';     $bpClass = 'ehati-badge-normal'; }
+                            }
+
+                            /* ================================================================
+                               GULA DARAH — sync bloodsugar.js classifyBS()
+                               Zona bawah (<70) dan atas (>=250) sama semua parameter.
+                               Zona tengah (70–249) beda per GDP / GD2PP / GDS.
+                               ================================================================ */
+                            $bsLabel = null; $bsClass = null;
+                            if ($r->konsentrasi_glukosa && $r->parameter_gula) {
+                                $ng = (float) $r->konsentrasi_glukosa;
+                                $pg = $r->parameter_gula;
+                                // Zona bawah
+                                if      ($ng < 40)  { $bsLabel = 'Hipo Kritis';  $bsClass = 'ehati-badge-danger'; }
+                                elseif  ($ng < 54)  { $bsLabel = 'Hipo Lvl 2';   $bsClass = 'ehati-badge-danger'; }
+                                elseif  ($ng < 70)  { $bsLabel = 'Hipo Lvl 1';   $bsClass = 'ehati-badge-info'; }
+                                // Zona atas
+                                elseif  ($ng >= 600){ $bsLabel = 'Krisis Hiper';  $bsClass = 'ehati-badge-danger'; }
+                                elseif  ($ng >= 250){ $bsLabel = 'Hiper Berat';   $bsClass = 'ehati-badge-danger'; }
+                                // Zona tengah per parameter
+                                elseif  ($pg === 'GDP') {
+                                    if      ($ng <= 109) { $bsLabel = 'Normal';      $bsClass = 'ehati-badge-normal'; }
+                                    elseif  ($ng <= 125) { $bsLabel = 'Prediabetes'; $bsClass = 'ehati-badge-warning'; }
+                                    else                 { $bsLabel = 'Diabetes';    $bsClass = 'ehati-badge-danger'; }
+                                }
+                                elseif  ($pg === 'GD2PP') {
+                                    if      ($ng <= 139) { $bsLabel = 'Normal';      $bsClass = 'ehati-badge-normal'; }
+                                    elseif  ($ng <= 199) { $bsLabel = 'Prediabetes'; $bsClass = 'ehati-badge-warning'; }
+                                    else                 { $bsLabel = 'Diabetes';    $bsClass = 'ehati-badge-danger'; }
+                                }
+                                else { /* GDS default */
+                                    if      ($ng <= 179) { $bsLabel = 'Normal';   $bsClass = 'ehati-badge-normal'; }
+                                    elseif  ($ng <= 199) { $bsLabel = 'Waspada';  $bsClass = 'ehati-badge-warning'; }
+                                    else                 { $bsLabel = 'Diabetes'; $bsClass = 'ehati-badge-danger'; }
+                                }
+                            }
+
+                            /* ================================================================
+                               KOLESTEROL — sync cholesterol.js classifyChol()
+                               < 120 Rendah | 120–199 Normal | 200–239 Ambang Batas
+                               240–299 Tinggi | >= 300 Sangat Tinggi
+                               Pakai < 240 (bukan <= 239) sesuai JS.
+                               ================================================================ */
+                            $cholLabel = null; $cholClass = null;
+                            if ($r->kolesterol_total) {
+                                $kol = (float) $r->kolesterol_total;
+                                if      ($kol < 120) { $cholLabel = 'Rendah';       $cholClass = 'ehati-badge-warning'; }
+                                elseif  ($kol < 200) { $cholLabel = 'Normal';       $cholClass = 'ehati-badge-normal'; }
+                                elseif  ($kol < 240) { $cholLabel = 'Ambang Batas'; $cholClass = 'ehati-badge-warning'; }
+                                elseif  ($kol < 300) { $cholLabel = 'Tinggi';       $cholClass = 'ehati-badge-danger'; }
+                                else                 { $cholLabel = 'Sangat Tinggi';$cholClass = 'ehati-badge-danger'; }
+                            }
+
+                            /* ================================================================
+                               ASAM URAT — sync uricacid.js classifyUA()
+                               RUJUKAN: laki   { low: 3.5, high: 7.2 }
+                                        perempuan { low: 2.6, high: 6.0 }
+                               level -1 Rendah | 0 Normal | 1 Tinggi (≤ high+2) | 2 Sangat Tinggi
+                               ================================================================ */
+                            $uaLabel = null; $uaClass = null;
+                            if ($r->asam_urat && $r->pegawai) {
+                                $jk   = strtolower($r->pegawai->jenis_kelamin ?? '');
+                                $laki = str_contains($jk, 'laki');
+                                $low  = $laki ? 3.5 : 2.6;
+                                $high = $laki ? 7.2 : 6.0;
+                                $ua   = (float) $r->asam_urat;
+                                if      ($ua < $low)          { $uaLabel = 'Rendah';       $uaClass = 'ehati-badge-info'; }
+                                elseif  ($ua <= $high)        { $uaLabel = 'Normal';       $uaClass = 'ehati-badge-normal'; }
+                                elseif  ($ua <= $high + 2.0)  { $uaLabel = 'Tinggi';       $uaClass = 'ehati-badge-warning'; }
+                                else                          { $uaLabel = 'Sangat Tinggi';$uaClass = 'ehati-badge-danger'; }
+                            }
+                        @endphp
                         <tr>
                             {{-- # --}}
                             <td class="text-center" style="color:#b7b9cc;font-weight:600;">
@@ -102,23 +208,9 @@ Perubahan dari original:
 
                             {{-- BMI --}}
                             <td class="text-center">
-                                @php
-                                    $bmi = null;
-                                    if ($r->tinggi_badan > 0 && $r->berat_badan > 0) {
-                                        $bmi = round($r->berat_badan / ($r->tinggi_badan / 100) ** 2, 1);
-                                    }
-                                @endphp
                                 @if ($bmi)
-                                    <span class="font-weight-bold">{{ $bmi }}</span>
-                                    @if ($bmi < 18.5)
-                                        <span class="ehati-badge ehati-badge-info">Kurus</span>
-                                    @elseif($bmi <= 24.9)
-                                        <span class="ehati-badge ehati-badge-normal">Normal</span>
-                                    @elseif($bmi <= 29.9)
-                                        <span class="ehati-badge ehati-badge-warning">Overweight</span>
-                                    @else
-                                        <span class="ehati-badge ehati-badge-danger">Obesitas</span>
-                                    @endif
+                                    <span class="font-weight-bold">{{ $bmi }}</span><br>
+                                    <span class="ehati-badge {{ $bmiClass }}">{{ $bmiLabel }}</span>
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
@@ -127,26 +219,23 @@ Perubahan dari original:
                             {{-- Tekanan Darah --}}
                             <td class="text-center">
                                 @if ($r->sistolik && $r->diastolik)
-                                    <span class="font-weight-bold">{{ $r->sistolik }}/{{ $r->diastolik }}</span>
-                                    @if ($r->sistolik < 120 && $r->diastolik < 80)
-                                        <span class="ehati-badge ehati-badge-normal">Normal</span>
-                                    @elseif($r->sistolik < 140 && $r->diastolik < 90)
-                                        <span class="ehati-badge ehati-badge-warning">Tinggi</span>
-                                    @else
-                                        <span class="ehati-badge ehati-badge-danger">Hipertensi</span>
-                                    @endif
+                                    <span class="font-weight-bold">{{ $r->sistolik }}/{{ $r->diastolik }}</span><br>
+                                    <span class="ehati-badge {{ $bpClass }}">{{ $bpLabel }}</span>
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
                             </td>
 
-                            {{-- Gula Darah — pakai konsentrasi_glukosa (kolom DB) --}}
+                            {{-- Gula Darah --}}
                             <td class="text-center">
                                 @if ($r->konsentrasi_glukosa)
                                     <span class="font-weight-bold">{{ $r->konsentrasi_glukosa }}</span>
                                     <small class="text-muted">mg/dL</small>
                                     @if ($r->parameter_gula)
                                         <br><small class="text-muted">{{ $r->parameter_gula }}</small>
+                                    @endif
+                                    @if ($bsLabel)
+                                        <br><span class="ehati-badge {{ $bsClass }}">{{ $bsLabel }}</span>
                                     @endif
                                 @else
                                     <span class="text-muted">-</span>
@@ -157,13 +246,8 @@ Perubahan dari original:
                             <td class="text-center">
                                 @if ($r->kolesterol_total)
                                     <span class="font-weight-bold">{{ $r->kolesterol_total }}</span>
-                                    @if ($r->kolesterol_total < 200)
-                                        <span class="ehati-badge ehati-badge-normal">Normal</span>
-                                    @elseif($r->kolesterol_total <= 239)
-                                        <span class="ehati-badge ehati-badge-warning">Borderline</span>
-                                    @else
-                                        <span class="ehati-badge ehati-badge-danger">Tinggi</span>
-                                    @endif
+                                    <small class="text-muted">mg/dL</small><br>
+                                    <span class="ehati-badge {{ $cholClass }}">{{ $cholLabel }}</span>
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
@@ -174,6 +258,9 @@ Perubahan dari original:
                                 @if ($r->asam_urat)
                                     <span class="font-weight-bold">{{ $r->asam_urat }}</span>
                                     <small class="text-muted">mg/dL</small>
+                                    @if ($uaLabel)
+                                        <br><span class="ehati-badge {{ $uaClass }}">{{ $uaLabel }}</span>
+                                    @endif
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
@@ -262,7 +349,7 @@ var basePdfUrl   = '{{ route('pemeriksaanExportPdf') }}';
 
 function buildExportUrl(base) {
     var params = new URLSearchParams(window.location.search);
-    params.delete('page'); // jangan bawa page
+    params.delete('page');
     return base + '?' + params.toString();
 }
 
